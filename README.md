@@ -9,7 +9,7 @@ This repository gathers only the materials required to run the practical exercis
 
 The detailed flow for each subcase is summarised below to facilitate reproduction during the practical sessions.
 
-Ver Figura 6 para el diagrama completo de actividades CYNET.
+See Figure 6 for the complete CYNET activity diagram.
 
 ![Figure 6: CYNET Activity Diagram](docs/figures/cynet-activity.png)
 
