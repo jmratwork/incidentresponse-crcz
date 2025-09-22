@@ -1,6 +1,18 @@
 [random_education_platform]
 rep ansible_host=10.10.10.20 ansible_user=admin ansible_password=repAdmin
 
+[instructor_console]
+instructor-console ansible_host=CHANGEME ansible_user=CHANGEME ansible_password=CHANGEME
+
+[trainee_workstations]
+trainee-workstations ansible_host=CHANGEME ansible_user=CHANGEME ansible_password=CHANGEME
+
+[reporting_workspace]
+reporting-workspace ansible_host=CHANGEME ansible_user=CHANGEME ansible_password=CHANGEME
+
+[cyberrange_simulators]
+cyberrange-simulators ansible_host=CHANGEME ansible_user=CHANGEME ansible_password=CHANGEME
+
 [ng_soc]
 ng-soc ansible_host=10.10.20.10 ansible_user=socops ansible_password=SocOps2024!
 
@@ -10,14 +22,11 @@ ng-siem ansible_host=10.10.20.11 ansible_user=siemsvc ansible_password=SiemSvc20
 [ng_soar]
 ng-soar ansible_host=10.10.20.12 ansible_user=soarops ansible_password=SoarOps2024!
 
-[bpms]
-bpms ansible_host=10.10.30.10 ansible_user=bpmsvc ansible_password=BpmsSvc2024!
-
-[cmdb]
-cmdb ansible_host=10.10.30.11 ansible_user=cmdbsvc ansible_password=CmdbSvc2024!
-
 [cti_ss]
 cti-ss ansible_host=10.10.30.12 ansible_user=ctisvc ansible_password=CtiSvc2024!
 
-[kms]
-kms ansible_host=10.10.40.10 ansible_user=kmsvc ansible_password=KmSvc2024!
+[cicms_operator]
+cicms-operator ansible_host=CHANGEME ansible_user=CHANGEME ansible_password=CHANGEME
+
+[playbook_library]
+playbook-library ansible_host=CHANGEME ansible_user=CHANGEME ansible_password=CHANGEME
