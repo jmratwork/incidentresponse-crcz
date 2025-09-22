@@ -2,12 +2,12 @@ name: cyberrangecz_core
 version: 1
 components:
   instructor_console:
-    purpose: "Preparar y monitorizar las sesiones educativas del subcaso 1a."
+    purpose: "Prepare and monitor the educational sessions for subcase 1a."
     integrations:
       - random_education_platform
       - reporting_workspace
   random_education_platform:
-    purpose: "Gestionar el contenido teórico, cuestionarios y laboratorios prácticos para trainees."
+    purpose: "Manage theoretical content, quizzes and hands-on labs for trainees."
     modules:
       - scheduler
       - live_session
@@ -18,52 +18,52 @@ components:
       - trainee_workstations
       - reporting_workspace
   trainee_workstations:
-    purpose: "Acceso de los/las trainees a los contenidos y laboratorios de CyberRangeCZ."
+    purpose: "Provide trainees with access to CyberRangeCZ content and labs."
     integrations:
       - random_education_platform
       - cyberrange_simulators
   reporting_workspace:
-    purpose: "Consolidar métricas y resultados de cuestionarios/pruebas para el instructor."
+    purpose: "Consolidate metrics and quiz/lab results for the instructor."
     integrations:
       - random_education_platform
       - instructor_console
   cyberrange_simulators:
-    purpose: "Escenarios prácticos utilizados en los ejercicios del subcaso 1a."
+    purpose: "Practical scenarios used in the exercises for subcase 1a."
     integrations:
       - random_education_platform
 
   ng_soc:
-    purpose: "Centro de operaciones que coordina la respuesta del subcaso 1d."
+    purpose: "Operations centre that coordinates the response for subcase 1d."
     integrations:
       - ng_siem
       - ng_soar
       - cicms_operator
       - playbook_library
   ng_siem:
-    purpose: "Plataforma de correlación y priorización de eventos."
+    purpose: "Platform for correlating and prioritising events."
     integrations:
       - ng_soc
       - cti_ss
   ng_soar:
-    purpose: "Motor de ejecución de playbooks CACAO."
+    purpose: "Execution engine for CACAO playbooks."
     integrations:
       - ng_soc
       - cti_ss
       - cicms_operator
       - playbook_library
   cti_ss:
-    purpose: "Servicio de inteligencia de amenazas que enriquece indicadores."
+    purpose: "Threat intelligence service that enriches indicators."
     integrations:
       - ng_siem
       - ng_soar
   cicms_operator:
-    purpose: "Operador que consolida evidencias, reportes y validaciones manuales del incidente."
+    purpose: "Operator that consolidates evidence, reports and manual incident validations."
     integrations:
       - ng_soc
       - ng_soar
       - playbook_library
   playbook_library:
-    purpose: "Repositorio de playbooks y estándares (NVD/NIST, MITRE ATT&CK) usado para guiar la respuesta."
+    purpose: "Repository of playbooks and standards (NVD/NIST, MITRE ATT&CK) used to guide the response."
     integrations:
       - ng_soc
       - ng_soar

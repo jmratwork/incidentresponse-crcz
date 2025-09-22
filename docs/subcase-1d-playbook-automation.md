@@ -1,63 +1,63 @@
-# Subcaso 1d – Automatización de Playbooks en el ecosistema NG-SOC
+# Subcase 1d – Playbook Automation in the NG-SOC Ecosystem
 
-Este documento resume las actividades que se desarrollan en el entorno operativo integrado por NG-SOC, NG-SIEM, NG-SOAR, el operador CICMS, CTI-SS y la biblioteca de playbooks/estándares (NVD/NIST, MITRE ATT&CK) durante la ejecución del subcaso 1d.
+This document summarises the activities carried out in the operational environment formed by NG-SOC, NG-SIEM, NG-SOAR, the CICMS Operator, CTI-SS and the playbook/standards library (NVD/NIST, MITRE ATT&CK) during the execution of subcase 1d.
 
-## Flujo operativo
-1. **Generación de alerta en NG-SIEM**
-   - NG-SIEM correlaciona eventos de telemetría y produce una alerta priorizada que incluye indicadores clave y activos afectados.
-   - La alerta se envía a la consola de NG-SOC junto con las recomendaciones iniciales basadas en reglas de correlación.
-2. **Validación en NG-SOC**
-   - El analista revisa la alerta, selecciona el playbook CACAO adecuado desde el repositorio de NG-SOC y define los parámetros de ejecución.
-   - Se contrasta la selección con la biblioteca de playbooks/estándares para asegurar cobertura frente a MITRE ATT&CK y referencias NVD/NIST.
-3. **Orquestación mediante NG-SOAR**
-   - NG-SOC orquesta la ejecución delegando en NG-SOAR, que interpreta la secuencia CACAO y coordina tareas automáticas.
-   - Los conectores de NG-SOAR consultan CTI-SS para enriquecer indicadores y validar reputación.
-4. **Coordinación con CICMS Operator**
-   - Cuando el playbook requiere intervenciones manuales o validaciones, NG-SOAR sincroniza los hitos con el operador CICMS.
-   - CICMS Operator consolida evidencias, actualiza el estado del incidente y prepara el reporte post-incidente.
-5. **Documentación y aprendizaje con la biblioteca de playbooks**
-   - Al finalizar cada fase, NG-SOAR publica los resultados en NG-SOC y NG-SIEM, mientras que CICMS Operator anota las decisiones relevantes.
-   - Se actualizan las referencias de la biblioteca (MITRE ATT&CK, NVD/NIST) con lecciones aprendidas y enlaces a CTI reciente.
+## Operational flow
+1. **Alert generation in NG-SIEM**
+   - NG-SIEM correlates telemetry events and produces a prioritised alert that includes key indicators and affected assets.
+   - The alert is sent to the NG-SOC console together with the initial recommendations based on correlation rules.
+2. **Validation in NG-SOC**
+   - The analyst reviews the alert, selects the appropriate CACAO playbook from the NG-SOC repository and defines the execution parameters.
+   - The selection is checked against the playbook/standards library to ensure coverage of MITRE ATT&CK and NVD/NIST references.
+3. **Orchestration via NG-SOAR**
+   - NG-SOC orchestrates the execution by delegating to NG-SOAR, which interprets the CACAO sequence and coordinates automated tasks.
+   - NG-SOAR connectors consult CTI-SS to enrich indicators and validate reputation.
+4. **Coordination with CICMS Operator**
+   - When the playbook requires manual interventions or validations, NG-SOAR synchronises the milestones with the CICMS operator.
+   - CICMS Operator consolidates evidence, updates the incident status and prepares the post-incident report.
+5. **Documentation and learning with the playbook library**
+   - At the end of each phase, NG-SOAR publishes the results in NG-SOC and NG-SIEM, while CICMS Operator records relevant decisions.
+   - References in the library (MITRE ATT&CK, NVD/NIST) are updated with lessons learnt and links to recent CTI.
 
-## Ejercicios prácticos
-### Ejercicio 1: Ransomware en infraestructura crítica
-- **Objetivo:** validar la detección temprana y la contención automática de un ataque de cifrado masivo.
-- **Fases operativas:**
-  1. *Detección*: NG-SIEM identifica patrones de cifrado anómalos y genera la alerta priorizada.
-  2. *Contención*: NG-SOAR ejecuta el playbook CACAO para aislar los endpoints críticos y revocar credenciales sospechosas.
-  3. *Recuperación*: CICMS coordina con los equipos de continuidad para restaurar respaldos y verificar integridad.
-- **Interacción de plataformas:** NG-SIEM alimenta a NG-SOAR con artefactos para automatizar la respuesta; NG-SOAR invoca conectores resilientes hacia CTI-SS para validar indicadores y hacia la biblioteca de playbooks para confirmar la cobertura MITRE ATT&CK; CICMS documenta las decisiones y actualiza el estado de recuperación, mientras NG-SOC supervisa la ejecución de extremo a extremo.
+## Practical exercises
+### Exercise 1: Ransomware in critical infrastructure
+- **Objective:** validate early detection and automatic containment of a mass encryption attack.
+- **Operational phases:**
+  1. *Detection*: NG-SIEM identifies anomalous encryption patterns and raises the prioritised alert.
+  2. *Containment*: NG-SOAR runs the CACAO playbook to isolate critical endpoints and revoke suspicious credentials.
+  3. *Recovery*: CICMS coordinates with continuity teams to restore backups and verify integrity.
+- **Platform interaction:** NG-SIEM feeds NG-SOAR with artefacts to automate the response; NG-SOAR invokes resilient connectors towards CTI-SS to validate indicators and towards the playbook library to confirm MITRE ATT&CK coverage; CICMS documents decisions and updates the recovery status, while NG-SOC supervises the end-to-end execution.
 
-### Ejercicio 2: Exfiltración de datos mediante canal cifrado
-- **Objetivo:** asegurar que el ecosistema coordine la investigación y bloqueo de comunicaciones maliciosas hacia servicios externos.
-- **Fases operativas:**
-  1. *Correlación*: NG-SIEM cruza flujos de red con inteligencia CTI-SS para identificar direcciones de comando y control.
-  2. *Orquestación*: NG-SOC selecciona el playbook CACAO que instruye a NG-SOAR para desplegar reglas de firewall y solicitar evidencia a herramientas de DLP.
-  3. *Análisis y cierre*: CICMS centraliza la evidencia, mientras la biblioteca de playbooks almacena los indicadores para futuras referencias.
-- **Interacción de plataformas:** NG-SOAR mantiene conectores redundantes hacia dispositivos de red para garantizar la aplicación de bloqueos; CTI-SS aporta indicadores enriquecidos; CICMS registra las aprobaciones y el racional técnico, y NG-SOC ajusta la estrategia basándose en los informes provenientes de NG-SIEM y NG-SOAR.
+### Exercise 2: Data exfiltration through encrypted channel
+- **Objective:** ensure the ecosystem coordinates the investigation and blocking of malicious communications to external services.
+- **Operational phases:**
+  1. *Correlation*: NG-SIEM cross-references network flows with CTI-SS intelligence to identify command-and-control addresses.
+  2. *Orchestration*: NG-SOC selects the CACAO playbook that instructs NG-SOAR to deploy firewall rules and request evidence from DLP tools.
+  3. *Analysis and closure*: CICMS centralises the evidence, while the playbook library stores the indicators for future reference.
+- **Platform interaction:** NG-SOAR maintains redundant connectors towards network devices to guarantee enforcement of the blocks; CTI-SS provides enriched indicators; CICMS records approvals and the technical rationale, and NG-SOC adjusts the strategy based on the reports from NG-SIEM and NG-SOAR.
 
-### Ejercicio 3: Compromiso de credenciales privilegiadas
-- **Objetivo:** evaluar la capacidad de detección, respuesta y remediación de accesos privilegiados comprometidos.
-- **Fases operativas:**
-  1. *Alerta inicial*: NG-SIEM detecta actividad sospechosa en cuentas privilegiadas con base en anomalías de comportamiento.
-  2. *Respuesta coordinada*: NG-SOC selecciona un playbook de rotación de credenciales que NG-SOAR ejecuta para revocar accesos, generar credenciales temporales y notificar a los responsables.
-  3. *Verificación y lecciones*: CICMS valida que se restablecieron los controles, mientras la biblioteca de playbooks incorpora las mejoras y CTI-SS añade firmas relacionadas.
-- **Interacción de plataformas:** NG-SOAR asegura la resiliencia de los conectores hacia los sistemas de gestión de identidades; NG-SIEM monitorea los eventos posteriores a la rotación; CICMS actualiza la documentación y las métricas de impacto, y NG-SOC utiliza la biblioteca de playbooks para proponer ajustes estratégicos y generar entrenamiento adicional.
+### Exercise 3: Compromise of privileged credentials
+- **Objective:** assess the capability to detect, respond to and remediate compromised privileged access.
+- **Operational phases:**
+  1. *Initial alert*: NG-SIEM detects suspicious activity on privileged accounts based on behavioural anomalies.
+  2. *Co-ordinated response*: NG-SOC selects a credential rotation playbook that NG-SOAR runs to revoke access, generate temporary credentials and notify those responsible.
+  3. *Verification and lessons*: CICMS confirms that controls have been reinstated, while the playbook library incorporates the improvements and CTI-SS adds related signatures.
+- **Platform interaction:** NG-SOAR ensures the resilience of connectors to identity management systems; NG-SIEM monitors events after the rotation; CICMS updates the documentation and impact metrics, and NG-SOC uses the playbook library to propose strategic adjustments and produce additional training.
 
-## Criterios de evaluación
-- Selección correcta del playbook CACAO en NG-SOC acorde a la clasificación inicial de la alerta.
-- Ejecución completa de las acciones automatizadas en NG-SOAR sin fallos en los conectores críticos.
-- Sincronización oportuna de los hitos en CICMS Operator, incluyendo evidencias y aprobaciones requeridas.
-- Registro de las lecciones aprendidas en la biblioteca de playbooks, enlazando controles MITRE ATT&CK y referencias NVD/NIST aplicadas.
-- Resiliencia de los conectores orquestados por NG-SOAR y NG-SOC, validando redundancias y planes de contingencia documentados.
-- Documentación exhaustiva en CICMS Operator, incluyendo procedimientos seguidos, indicadores finales y responsables de cada acción.
-- Incorporación y seguimiento de métricas post-incidente (tiempo de contención, tiempo de recuperación, impacto residual) registradas en NG-SIEM, NG-SOAR y CICMS.
+## Assessment criteria
+- Correct selection of the CACAO playbook in NG-SOC according to the alert's initial classification.
+- Complete execution of the automated actions in NG-SOAR without failures in critical connectors.
+- Timely synchronisation of milestones in CICMS Operator, including required evidence and approvals.
+- Recording of lessons learnt in the playbook library, linking applied MITRE ATT&CK controls and NVD/NIST references.
+- Resilience of the connectors orchestrated by NG-SOAR and NG-SOC, validating redundancies and documented contingency plans.
+- Comprehensive documentation in CICMS Operator, including procedures followed, final indicators and the person responsible for each action.
+- Incorporation and monitoring of post-incident metrics (containment time, recovery time, residual impact) recorded in NG-SIEM, NG-SOAR and CICMS.
 
-## Retroalimentación automática de la plataforma
-- NG-SIEM genera un puntaje de calidad de detección basado en la precisión de la correlación y lo muestra en la consola de NG-SOC.
-- NG-SOAR expone un informe de ejecución del playbook con métricas de éxito por tarea, destacando los pasos que requieren revisión.
-- CICMS Operator alerta cuando un hito manual queda pendiente y conserva la trazabilidad necesaria para auditoría.
-- La biblioteca de playbooks publica un resumen actualizado con referencias a MITRE ATT&CK, NVD/NIST y CTI reciente para incidentes futuros.
-- Los conectores monitoreados por NG-SOAR reportan indicadores de resiliencia (latencia, disponibilidad, reintentos) para facilitar ajustes preventivos.
-- CICMS Operator genera recordatorios automáticos para completar la documentación pendiente y contrastarla con los lineamientos internos.
-- Se calculan métricas post-incidente consolidadas (MTTD, MTTR, eficacia de contención) y se comparan con umbrales definidos dentro de la biblioteca de playbooks.
+## Automatic platform feedback
+- NG-SIEM generates a detection quality score based on correlation accuracy and displays it on the NG-SOC console.
+- NG-SOAR provides a playbook execution report with success metrics per task, highlighting the steps that require review.
+- CICMS Operator issues alerts when a manual milestone remains pending and preserves the traceability required for audit.
+- The playbook library publishes an updated summary with references to MITRE ATT&CK, NVD/NIST and recent CTI for future incidents.
+- Connectors monitored by NG-SOAR report resilience indicators (latency, availability, retries) to support preventive adjustments.
+- CICMS Operator generates automatic reminders to complete pending documentation and compare it with internal guidelines.
+- Consolidated post-incident metrics (MTTD, MTTR, containment effectiveness) are calculated and compared with thresholds defined within the playbook library.

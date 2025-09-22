@@ -1,15 +1,15 @@
-# Procedimientos automatizados para playbooks CACAO en NG-SOAR
+# Automated procedures for CACAO playbooks in NG-SOAR
 
-Este documento reemplaza los scripts de despliegue tradicionales y describe cómo automatizar el ciclo de vida de los playbooks CACAO dentro de NG-SOAR, garantizando su sincronización con CICMS Operator, CTI-SS y la biblioteca de playbooks. Las automatizaciones se basan en API disponibles en los componentes del Subcaso 1d y pueden ejecutarse desde cualquier consola con acceso autenticado.
+This document replaces traditional deployment scripts and explains how to automate the lifecycle of CACAO playbooks within NG-SOAR, ensuring synchronisation with CICMS Operator, CTI-SS and the playbook library. The automations rely on APIs available in the Subcase 1d components and can be run from any console with authenticated access.
 
-> **Requisitos previos:** los ejemplos utilizan [HTTPie](https://httpie.io/) con las opciones `--check-status` y `--print=b` (`-b`) para asegurarse de que cualquier procesamiento posterior, como `jq`, opere exclusivamente sobre el cuerpo JSON devuelto por la API y para que los scripts fallen ante códigos HTTP no exitosos.
+> **Prerequisites:** the examples use [HTTPie](https://httpie.io/) with the `--check-status` and `--print=b` (`-b`) options to ensure that any post-processing, such as `jq`, operates solely on the JSON body returned by the API and so that scripts fail on unsuccessful HTTP codes.
 
-## 1. Creación de playbooks
+## 1. Playbook creation
 
 ```bash
 #!/usr/bin/env bash
 # crear_playbook.sh
-# Uso: ./crear_playbook.sh ruta/al/playbook.json
+# Usage: ./crear_playbook.sh path/to/playbook.json
 set -euo pipefail
 PLAYBOOK_PATH="$1"
 TOKEN=$(http --check-status --print=b POST https://ng-soc.example/api/auth username=$SOC_USER password=$SOC_PASS | jq -r '.token')
@@ -27,17 +27,17 @@ http --check-status POST https://cicms.example/api/incidents/register-playbook \
   playbook_path="$PLAYBOOK_PATH"
 ```
 
-- La primera llamada registra el playbook en el repositorio central de NG-SOC.
-- La segunda llamada lo importa en NG-SOAR para quedar disponible en las colas de ejecución.
-- La tercera registra el material en CICMS Operator para que el equipo operativo disponga del contexto actualizado.
-- Cada script de creación debe almacenarse junto con las referencias correspondientes en la biblioteca de playbooks.
+- The first call registers the playbook in the NG-SOC central repository.
+- The second call imports it into NG-SOAR so it is available in the execution queues.
+- The third records the material in CICMS Operator so the operations team has the latest context.
+- Each creation script should be stored together with the corresponding references in the playbook library.
 
-## 2. Actualización y versionado
+## 2. Updating and versioning
 
 ```bash
 #!/usr/bin/env bash
 # actualizar_playbook.sh
-# Uso: ./actualizar_playbook.sh identificador ruta/al/playbook.json
+# Usage: ./actualizar_playbook.sh identifier path/to/playbook.json
 set -euo pipefail
 PLAYBOOK_ID="$1"
 PLAYBOOK_PATH="$2"
@@ -58,15 +58,15 @@ http --check-status POST https://playbooks.example/api/library/register \
   references="MITRE ATT&CK,NVD,NIST"
 ```
 
-- La actualización sincroniza NG-SOC y NG-SOAR con la nueva versión y registra el cambio en la biblioteca de playbooks.
-- La biblioteca conserva el historial de versiones y las notas de publicación.
+- The update synchronises NG-SOC and NG-SOAR with the new version and records the change in the playbook library.
+- The library keeps the version history and the release notes.
 
-## 3. Distribución y compartición con CTI-SS
+## 3. Distribution and sharing with CTI-SS
 
 ```bash
 #!/usr/bin/env bash
 # compartir_playbook.sh
-# Uso: ./compartir_playbook.sh identificador canal_ctiss
+# Usage: ./compartir_playbook.sh identifier ctiss_channel
 set -euo pipefail
 PLAYBOOK_ID="$1"
 CHANNEL="$2"
@@ -81,16 +81,16 @@ http --check-status POST https://cti-ss.example/api/cacao/share \
   payload="$PAYLOAD"
 ```
 
-- NG-SOAR expone el playbook en formato CACAO y CTI-SS lo replica hacia los canales de inteligencia específicos.
-- CTI-SS añade etiquetas y taxonomías antes de redistribuir el contenido.
-- El proceso queda registrado en CICMS Operator y en la biblioteca para mantener la trazabilidad.
+- NG-SOAR exposes the playbook in CACAO format and CTI-SS replicates it to the targeted intelligence channels.
+- CTI-SS adds tags and taxonomies before redistributing the content.
+- The process is logged in CICMS Operator and in the library to maintain traceability.
 
-## 4. Integraciones con CICMS Operator y la biblioteca de playbooks
-- Cada script registra metadatos en CICMS Operator y en la biblioteca (`/library/register`) para mantener la trazabilidad.
-- Los responsables de NG-SOC revisan semanalmente el tablero de CICMS Operator para validar que no existan discrepancias entre versiones.
-- Cuando un playbook alcanza estado estable, se crea un resumen en la biblioteca con referencia a las fuentes de CTI-SS empleadas.
+## 4. Integrations with CICMS Operator and the playbook library
+- Each script records metadata in CICMS Operator and in the library (`/library/register`) to preserve traceability.
+- NG-SOC leads review of the CICMS Operator dashboard every week to confirm there are no discrepancies between versions.
+- When a playbook reaches a stable state, a summary is created in the library with references to the CTI-SS sources used.
 
-## 5. Sustitución de la infraestructura KYPO
-- Estas automatizaciones se ejecutan dentro del propio ecosistema NG y eliminan la dependencia de la infraestructura KYPO.
-- No se requieren máquinas externas ni despliegues adicionales: basta con credenciales de servicio y conectividad segura.
-- La documentación y scripts se alojan en la biblioteca de playbooks asociada al Subcaso 1d.
+## 5. Replacement of the KYPO infrastructure
+- These automations run within the NG ecosystem itself and remove the dependency on the KYPO infrastructure.
+- No external machines or additional deployments are required: service credentials and secure connectivity are sufficient.
+- Documentation and scripts are hosted in the playbook library associated with Subcase 1d.
