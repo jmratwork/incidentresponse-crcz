@@ -29,7 +29,7 @@ ansible-galaxy collection install community.general
 ## Running the playbook
 
 ```bash
-ansible-playbook -i inventory.yml provisioning/subcase-1d/site.yml
+ansible-playbook -i inventory.ini provisioning/subcase-1d/site.yml
 ```
 
 Use tags to execute individual components, e.g. `--tags ng_siem` to provision only the SIEM server.

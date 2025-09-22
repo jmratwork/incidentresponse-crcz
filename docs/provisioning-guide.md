@@ -17,7 +17,7 @@ This guide explains how to instantiate the CyberRangeCZ infrastructure aligned w
 
 ## 2. Prepare credentials
 
-1. Duplicate `inventory.sample` and rename it to `inventory.yml` (or similar).
+1. Duplicate `inventory.sample` and rename it to `inventory.ini` (or keep the `.sample` extension).
 2. Keep the hostnames and IP addresses defined by the topology files.
 3. Export credentials as environment variables before executing Ansible, for example:
 
@@ -42,7 +42,7 @@ ansible-galaxy collection install ansible.windows community.general
 ### Subcase 1a
 
 ```bash
-ansible-playbook -i inventory.yml provisioning/subcase-1a/site.yml
+ansible-playbook -i inventory.ini provisioning/subcase-1a/site.yml
 ```
 
 The playbook:
@@ -54,7 +54,7 @@ The playbook:
 ### Subcase 1d
 
 ```bash
-ansible-playbook -i inventory.yml provisioning/subcase-1d/site.yml
+ansible-playbook -i inventory.ini provisioning/subcase-1d/site.yml
 ```
 
 This playbook configures the NG ecosystem by installing packages, enabling services and seeding working directories that match the operational flow described in the NG-SOC documentation.
@@ -63,7 +63,7 @@ Use tags (e.g. `--tags ng_soar`) to target specific components during troublesho
 
 ## 5. Validation steps
 
-- Check SSH or WinRM connectivity with `ansible all -i inventory.yml -m ping` (use `ansible.windows.win_ping` for Windows groups).
+- Check SSH or WinRM connectivity with `ansible all -i inventory.ini -m ping` (use `ansible.windows.win_ping` for Windows groups).
 - Verify that key services are running (`nginx` on the playbook library, `redis-server` on NG-SOAR, `grafana-server` on the reporting workspace).
 - Trigger the telemetry simulator script (`/opt/telemetry-simulator/scenarios/generate.sh`) and confirm that NG-SIEM receives events through `rsyslog`.
 - Confirm that trainees can access the `WELCOME.txt` note in `C:\Labs` and that the instructor console has the `rep-notes` workspace.
