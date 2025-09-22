@@ -9,6 +9,12 @@ This repository gathers only the materials required to run the practical exercis
 
 The detailed flow for each subcase is summarised below to facilitate reproduction during the practical sessions.
 
+Ver Figura 6 para el diagrama completo de actividades CYNET.
+
+![Figure 6: CYNET Activity Diagram](docs/figures/cynet-activity.png)
+
+*Figure 6. Activity diagram illustrating how the CYNET platform canalises the instructor-led sequence for subcase 1a and the automated NG-SOC response for subcase 1d.*
+
 ## Subcase 1a flow
 
 1. **Instructor preparation**
