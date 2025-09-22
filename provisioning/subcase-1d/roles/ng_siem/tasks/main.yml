@@ -11,6 +11,14 @@
     enabled: true
     state: started
 
+- name: Ensure NG-SIEM configuration directory exists
+  ansible.builtin.file:
+    path: /etc/ng-siem
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
 - name: Deploy placeholder correlation profile
   ansible.builtin.copy:
     dest: /etc/ng-siem/correlation.conf
