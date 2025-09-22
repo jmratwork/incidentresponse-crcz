@@ -1,43 +1,43 @@
-# Habilitación de la Random Education Platform y servicios NG del Subcaso 1d
+# Enabling the Random Education Platform and NG services for Subcase 1d
 
-Este artefacto describe las actividades necesarias para disponer de la Random Education Platform (REP) y de los servicios NG-SOC, NG-SIEM, NG-SOAR, CICMS Operator, CTI-SS y la biblioteca de playbooks durante las prácticas del Subcaso 1d. La información se presenta como procedimientos de activación y no como instrucciones de despliegue desde cero; se asume que los componentes existen en el CyberRangeCZ y requieren únicamente configuración y conexión.
+This artefact describes the activities required to make the Random Education Platform (REP) and the NG-SOC, NG-SIEM, NG-SOAR, CICMS Operator, CTI-SS and playbook library services available during the Subcase 1d exercises. The information is presented as activation procedures rather than instructions for deploying from scratch; it assumes the components already exist in CyberRangeCZ and only require configuration and interconnection.
 
 ## Random Education Platform (REP)
-1. **Verificar módulos activos**: habilitar *Scheduler*, *Live Session*, *Quiz Engine* y *Practical Labs* desde el panel de administración.
-2. **Conectar con el instructor**: vincular la consola del instructor y la zona de reporting seleccionando la clase correspondiente en el calendario.
-3. **Sincronizar simuladores**: confirmar que los simuladores de CyberRangeCZ estén publicados como laboratorios dentro de la REP y asignarlos al itinerario del ejercicio.
+1. **Verify active modules**: enable *Scheduler*, *Live Session*, *Quiz Engine* and *Practical Labs* from the administration panel.
+2. **Connect with the instructor**: link the instructor console and the reporting area by selecting the relevant class in the calendar.
+3. **Synchronise simulators**: confirm that the CyberRangeCZ simulators are published as labs within the REP and assign them to the exercise itinerary.
 
 ## NG-SOC
-1. **Activar la recepción de alertas** desde NG-SIEM habilitando el canal seguro `soc-siem`.
-2. **Sincronizar playbooks CACAO** con NG-SOAR mediante la API `soar-repository/sync` para garantizar que las versiones validadas estén disponibles.
-3. **Exponer panel operativo** enlazando la biblioteca de playbooks como fuente de conocimiento para consultas en tiempo real.
+1. **Activate alert reception** from NG-SIEM by enabling the secure `soc-siem` channel.
+2. **Synchronise CACAO playbooks** with NG-SOAR via the `soar-repository/sync` API to ensure validated versions are available.
+3. **Expose the operational dashboard** by linking the playbook library as a knowledge source for real-time queries.
 
 ## NG-SIEM
-1. **Seleccionar fuentes de telemetría** asociadas al laboratorio y asegurarse de que la clasificación de eventos coincide con los escenarios del Subcaso 1d.
-2. **Publicar reglas de correlación** específicas que generen alertas priorizadas hacia NG-SOC.
-3. **Habilitar intercambio con CTI-SS** para enriquecer automáticamente los incidentes con inteligencia de amenazas vigente.
+1. **Select telemetry sources** associated with the lab and confirm that event classification matches the Subcase 1d scenarios.
+2. **Publish correlation rules** that raise prioritised alerts towards NG-SOC.
+3. **Enable exchange with CTI-SS** to enrich incidents automatically with current threat intelligence.
 
 ## NG-SOAR
-1. **Importar playbooks CACAO** recibidos desde NG-SOC y validar su integridad en el repositorio interno.
-2. **Configurar conectores** hacia CICMS Operator, CTI-SS y la biblioteca de playbooks asegurando credenciales de servicio y certificados actualizados.
-3. **Definir colas de ejecución** para separar tareas automáticas de las que requieren intervención manual supervisada por CICMS Operator.
+1. **Import CACAO playbooks** received from NG-SOC and verify their integrity in the internal repository.
+2. **Configure connectors** to CICMS Operator, CTI-SS and the playbook library, ensuring service credentials and certificates are up to date.
+3. **Define execution queues** to separate automated tasks from those requiring manual intervention supervised by the CICMS Operator.
 
 ## CICMS Operator
-1. **Registrar procesos de apoyo** vinculados a los playbooks CACAO (aprobaciones, revisiones, tareas de campo) dentro del flujo operativo.
-2. **Establecer SLA y notificaciones** para cada actividad manual, direccionando las alertas a los grupos operativos de NG-SOC.
-3. **Sincronizar el panel de seguimiento** con NG-SOAR para recibir hitos de ejecución y devolver confirmaciones de cierre.
+1. **Register support processes** linked to the CACAO playbooks (approvals, reviews, field tasks) within the operational flow.
+2. **Set SLAs and notifications** for each manual activity, routing alerts to the NG-SOC operational groups.
+3. **Synchronise the tracking dashboard** with NG-SOAR to receive execution milestones and return closure confirmations.
 
 ## CTI-SS
-1. **Seleccionar fuentes de inteligencia** relevantes al ejercicio y actualizar los feeds de indicadores.
-2. **Publicar taxonomías y etiquetas** que NG-SOAR utilizará para clasificar indicadores durante el enriquecimiento.
-3. **Sincronizar conocimiento con la biblioteca de playbooks** para que las lecciones aprendidas incorporen contexto de amenazas vigente.
+1. **Select relevant intelligence sources** for the exercise and update the indicator feeds.
+2. **Publish taxonomies and tags** that NG-SOAR will use to classify indicators during enrichment.
+3. **Synchronise knowledge with the playbook library** so lessons learnt include up-to-date threat context.
 
-## Biblioteca de playbooks/estándares
-1. **Definir el espacio de conocimiento** del Subcaso 1d, incorporando referencias MITRE ATT&CK, NVD y NIST aplicables.
-2. **Configurar integraciones** para recibir datos de NG-SOC, NG-SOAR y CICMS Operator mediante conectores autenticados.
-3. **Habilitar versionado** automático de documentos para conservar la evolución de los playbooks y procedimientos.
+## Playbook/standards library
+1. **Define the knowledge space** for Subcase 1d, incorporating applicable MITRE ATT&CK, NVD and NIST references.
+2. **Configure integrations** to receive data from NG-SOC, NG-SOAR and CICMS Operator through authenticated connectors.
+3. **Enable automatic versioning** of documents to preserve the evolution of playbooks and procedures.
 
-## Validación final
-- Revisar desde NG-SOC que todos los componentes respondan a pruebas de conectividad.
-- Ejecutar un playbook CACAO de verificación y confirmar que CICMS Operator, CTI-SS y la biblioteca de playbooks registran actividad.
-- Documentar los resultados en CICMS Operator y notificar a los responsables del ejercicio.
+## Final validation
+- Check from NG-SOC that all components respond to connectivity tests.
+- Run a CACAO verification playbook and confirm that CICMS Operator, CTI-SS and the playbook library record activity.
+- Document the results in CICMS Operator and notify the exercise owners.

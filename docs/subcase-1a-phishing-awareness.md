@@ -1,61 +1,61 @@
-# Subcaso 1a – Phishing Awareness en la Random Education Platform
+# Subcase 1a – Phishing Awareness on the Random Education Platform
 
-Esta guía describe las actividades que el instructor y los/las trainees realizan dentro de la Random Education Platform (REP) para el módulo de concienciación frente a phishing. El flujo mantiene la correspondencia con los componentes documentados en la arquitectura de CyberRangeCZ.
+This guide describes the activities carried out by the instructor and trainees within the Random Education Platform (REP) for the phishing awareness module. The flow mirrors the components documented in the CyberRangeCZ architecture.
 
-## Preparación del curso por el instructor
-- **Planificación en la consola del instructor**: se definen los objetivos del módulo y se asignan los recursos necesarios desde el repositorio de contenidos de CyberRangeCZ.
-- **Programación en REP Scheduler**: el instructor crea el curso temático y activa los bloques de teoría, ejercicios guiados y prácticas sobre análisis de correos sospechosos.
-- **Sincronización con el Reporting Workspace**: se configuran los tableros de métricas que recibirán los resultados de cuestionarios y laboratorios.
+## Course preparation by the instructor
+- **Planning in the instructor console**: define the module objectives and assign the necessary resources from the CyberRangeCZ content repository.
+- **Scheduling in REP Scheduler**: the instructor creates the themed course and enables the theory blocks, guided exercises and practical work on suspicious email analysis.
+- **Synchronisation with the Reporting Workspace**: configure the metric dashboards that will receive the quiz and lab results.
 
-## Desarrollo de la sesión
-1. **Apertura en REP Live Session**
-   - El instructor inicia la sesión en vivo, comparte las reglas del ejercicio y habilita los canales colaborativos integrados (chat, videoconferencia y pizarra).
-   - Las estaciones de trabajo de los/las trainees reciben el itinerario personalizado con cápsulas teóricas y recordatorios de buenas prácticas.
-2. **Cuestionarios en REP Quiz Engine**
-   - Cada trainee responde cuestionarios formativos que evalúan conceptos clave de phishing.
-   - El panel analítico muestra puntuaciones en tiempo real para orientar la intervención del instructor.
-3. **Laboratorio de análisis de correos**
-   - A través de los simuladores del CyberRangeCZ, los/las trainees clasifican correos potencialmente maliciosos, verifican cabeceras y adjuntos en un entorno controlado.
-   - Las acciones se registran y se vinculan con los objetivos del curso para su evaluación posterior.
-4. **Cierre y reporte**
-   - REP Practical Labs consolida los resultados del laboratorio y envía un resumen automático al Reporting Workspace.
-   - El instructor revisa los hallazgos y coordina la retroalimentación grupal destacando aciertos y áreas de mejora.
+## Session delivery
+1. **Opening in REP Live Session**
+   - The instructor starts the live session, shares the exercise rules and enables the integrated collaborative channels (chat, videoconferencing and whiteboard).
+   - The trainees' workstations receive a personalised itinerary with theory capsules and reminders of good practice.
+2. **Quizzes in REP Quiz Engine**
+   - Each trainee answers formative quizzes that assess key phishing concepts.
+   - The analytics panel displays scores in real time to guide the instructor's intervention.
+3. **Email analysis lab**
+   - Through the CyberRangeCZ simulators, trainees classify potentially malicious emails, verify headers and inspect attachments in a controlled environment.
+   - The actions are recorded and linked to the course objectives for later assessment.
+4. **Closure and reporting**
+   - REP Practical Labs consolidates the lab results and sends an automatic summary to the Reporting Workspace.
+   - The instructor reviews the findings and leads group feedback, highlighting strengths and improvement areas.
 
-## Ejercicios avanzados
+## Advanced exercises
 
-### Campaña de spear phishing multicanal
-- **Objetivo**: diseñar y ejecutar una campaña que combine correo electrónico, mensajería instantánea y llamadas simuladas para reforzar la detección de tácticas de spear phishing dirigidas.
-- **Pasos clave**:
-  1. En **REP Scheduler**, el instructor programa un bloque adicional que sincroniza los distintos canales y define los criterios de activación para cada grupo de trainees.
-  2. Durante la actividad en **REP Live Session**, se liberan los mensajes según el guion temporal y se monitoriza la respuesta de los/las participantes en los canales colaborativos.
-  3. Los resultados se documentan en **REP Practical Labs**, que registra evidencias de cada canal y permite comparar la eficacia de las contramedidas aplicadas.
-  4. El **Reporting Workspace** consolida los indicadores de cada canal (tasa de clics, respuestas sospechosas, tiempos de reporte) para apoyar la discusión final.
+### Multi-channel spear phishing campaign
+- **Objective**: design and run a campaign combining email, instant messaging and simulated calls to reinforce the detection of targeted spear phishing tactics.
+- **Key steps**:
+  1. In **REP Scheduler**, the instructor programmes an additional block that synchronises the different channels and defines activation criteria for each trainee group.
+  2. During the activity in **REP Live Session**, messages are released according to the planned timeline and participants' responses across collaborative channels are monitored.
+  3. The outcomes are documented in **REP Practical Labs**, which records evidence for each channel and enables comparison of the effectiveness of the applied countermeasures.
+  4. The **Reporting Workspace** consolidates indicators for each channel (click rate, suspicious responses, reporting times) to support the final debrief.
 
-### Cadena de respuesta colaborativa
-- **Objetivo**: entrenar la coordinación entre roles técnicos y no técnicos ante una alerta de phishing escalada en la plataforma.
-- **Pasos clave**:
-  1. El instructor habilita en **REP Scheduler** una práctica secuencial que asigna tareas a cada rol (analista, communications lead, soporte legal) y define los disparadores de escalamiento.
-  2. En **REP Live Session**, los/las trainees trabajan en tiempo real sobre el caso, utilizando los tableros compartidos y el chat para acordar decisiones y documentar acciones.
-  3. **REP Practical Labs** captura los artefactos generados (formularios de notificación, tickets de soporte, análisis de evidencia) y verifica el cumplimiento de los pasos del playbook.
-  4. El **Reporting Workspace** produce un informe de colaboración que destaca los hitos, tiempos de respuesta y dependencias críticas.
+### Collaborative response chain
+- **Objective**: train the coordination between technical and non-technical roles when a phishing alert is escalated on the platform.
+- **Key steps**:
+  1. The instructor enables in **REP Scheduler** a sequential exercise that assigns tasks to each role (analyst, communications lead, legal support) and defines escalation triggers.
+  2. In **REP Live Session**, trainees work in real time on the case, using shared dashboards and chat to agree decisions and document actions.
+  3. **REP Practical Labs** captures the generated artefacts (notification forms, support tickets, evidence analysis) and checks compliance with the playbook steps.
+  4. The **Reporting Workspace** produces a collaboration report highlighting milestones, response times and critical dependencies.
 
-### Informe forense exprés
-- **Objetivo**: elaborar un reporte condensado de análisis forense tras la detección de un phishing exitoso, sintetizando evidencias y recomendaciones.
-- **Pasos clave**:
-  1. A través de **REP Scheduler**, se despliega un módulo intensivo que incluye capturas de evidencias, logs y artefactos comprometidos para su revisión.
-  2. En **REP Live Session**, el instructor guía un breve repaso de las evidencias críticas y aclara el alcance del informe que debe entregarse.
-  3. Los/las trainees utilizan **REP Practical Labs** para procesar las evidencias, generar hallazgos preliminares y estructurar las secciones del informe.
-  4. El informe final se carga en el **Reporting Workspace**, donde se valida contra una plantilla de incident response y se comparan las conclusiones entre equipos.
+### Express forensic report
+- **Objective**: produce a concise forensic report after detecting a successful phishing attempt, summarising evidence and recommendations.
+- **Key steps**:
+  1. Via **REP Scheduler**, an intensive module is deployed including captured evidence, logs and compromised artefacts for review.
+  2. In **REP Live Session**, the instructor leads a brief review of the critical evidence and clarifies the scope of the report to be delivered.
+  3. Trainees use **REP Practical Labs** to process the evidence, generate preliminary findings and structure the report sections.
+  4. The final report is uploaded to the **Reporting Workspace**, where it is validated against an incident response template and the conclusions are compared across teams.
 
-## Criterios de evaluación
-- Configuración completa del curso en REP Scheduler con todos los materiales obligatorios.
-- Tasa de respuestas correctas en los cuestionarios superior al umbral definido por el instructor.
-- Cobertura del laboratorio: revisión de cabeceras, análisis de indicadores y verificación de adjuntos en los simuladores.
-- Ejecución satisfactoria de los ejercicios avanzados, demostrando coordinación multicanal, colaboración entre roles y capacidad de síntesis forense según las pautas del Reporting Workspace.
-- Entrega de un reporte final que sintetice riesgos detectados, hallazgos de los ejercicios avanzados y recomendaciones para mitigar campañas de phishing.
+## Assessment criteria
+- Complete configuration of the course in REP Scheduler with all mandatory materials.
+- Quiz pass rate above the threshold defined by the instructor.
+- Lab coverage: header review, indicator analysis and attachment inspection within the simulators.
+- Successful delivery of the advanced exercises, demonstrating multi-channel coordination, cross-role collaboration and forensic synthesis according to the Reporting Workspace guidelines.
+- Submission of a final report summarising detected risks, findings from the advanced exercises and recommendations to mitigate phishing campaigns.
 
-## Retroalimentación automática de la plataforma
-- REP Quiz Engine muestra inmediatamente las respuestas correctas e incorrectas, incluyendo la explicación asociada a cada pregunta.
-- REP Practical Labs asigna puntuaciones parciales por cada paso del análisis de correos (identificación del remitente, validación de enlaces y revisión de adjuntos) y genera alertas cuando falta documentar una evidencia.
-- El Reporting Workspace emite un tablero resumen con indicadores de cumplimiento y un semáforo de riesgo por participante, que sirve como base para la retroalimentación personalizada del instructor.
-- Para los ejercicios avanzados, REP Scheduler genera alertas sobre hitos no completados, REP Live Session ofrece registros de participación colaborativa y el Reporting Workspace añade paneles específicos que visualizan tiempos de respuesta, calidad de las entregas forenses y efectividad de la campaña multicanal.
+## Automatic platform feedback
+- REP Quiz Engine immediately shows correct and incorrect answers, including the explanation associated with each question.
+- REP Practical Labs awards partial scores for every email analysis step (identifying the sender, validating links and reviewing attachments) and raises alerts when evidence has not been documented.
+- The Reporting Workspace issues a summary dashboard with compliance indicators and a traffic-light risk status per participant, providing a basis for the instructor's personalised feedback.
+- For the advanced exercises, REP Scheduler generates alerts about incomplete milestones, REP Live Session offers records of collaborative participation, and the Reporting Workspace adds dedicated panels that display response times, the quality of forensic deliverables and the effectiveness of the multi-channel campaign.

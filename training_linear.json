@@ -1,113 +1,113 @@
 {
   "name": "CyberRangeCZ Practical Modules",
-  "description": "Secuencia de aprendizaje para los subcasos 1a y 1d del entorno CyberRangeCZ, orientada a instructores y equipos operativos.",
+  "description": "Learning sequence for subcases 1a and 1d in the CyberRangeCZ environment, aimed at instructors and operations teams.",
   "modules": [
     {
       "id": "subcase-1a",
-      "title": "Subcaso 1a - Entrenamiento guiado por instructor",
+      "title": "Subcase 1a - Instructor-led training",
       "phases": [
         {
-          "name": "Planificación de la sesión",
+          "name": "Session planning",
           "activities": [
             {
               "step": 1,
-              "description": "El instructor define objetivos, materiales y tiempos de la sesión en el panel de control de CyberRangeCZ.",
-              "tools": ["Consola del instructor", "Repositorio de contenidos CyberRangeCZ"]
+              "description": "The instructor defines objectives, materials and timings for the session within the CyberRangeCZ control panel.",
+              "tools": ["Instructor console", "CyberRangeCZ content repository"]
             },
             {
               "step": 2,
-              "description": "Se programa la actividad en la Random Education Platform (REP) asignando los módulos introductorios.",
+              "description": "The activity is scheduled in the Random Education Platform (REP) by assigning the introductory modules.",
               "tools": ["Random Education Platform - Scheduler"]
             }
           ]
         },
         {
-          "name": "Desarrollo de la clase en REP",
+          "name": "Delivering the class on REP",
           "activities": [
             {
               "step": 3,
-              "description": "El instructor inicia la sesión en vivo, presenta objetivos y activa los canales colaborativos (chat, videoconferencia, pizarra).",
-              "tools": ["Random Education Platform - Live Session", "Herramientas colaborativas integradas"]
+              "description": "The instructor starts the live session, presents objectives and enables the collaborative channels (chat, videoconferencing, whiteboard).",
+              "tools": ["Random Education Platform - Live Session", "Integrated collaborative tools"]
             },
             {
               "step": 4,
-              "description": "La REP distribuye automáticamente cápsulas teóricas breves y simulaciones guiadas a cada trainee.",
-              "tools": ["Random Education Platform - Content Delivery", "Simuladores CyberRangeCZ"]
+              "description": "REP automatically distributes short theory capsules and guided simulations to each trainee.",
+              "tools": ["Random Education Platform - Content Delivery", "CyberRangeCZ simulators"]
             }
           ]
         },
         {
-          "name": "Cuestionarios formativos",
+          "name": "Formative quizzes",
           "activities": [
             {
               "step": 5,
-              "description": "Los trainees responden cuestionarios interactivos con feedback inmediato.",
+              "description": "Trainees answer interactive quizzes with immediate feedback.",
               "tools": ["Random Education Platform - Quiz Engine"]
             },
             {
               "step": 6,
-              "description": "El instructor revisa los resultados en tiempo real para identificar dudas y reforzar los puntos clave.",
-              "tools": ["Panel analítico de la REP", "Consola del instructor"]
+              "description": "The instructor reviews real-time results to identify questions and reinforce key points.",
+              "tools": ["REP analytics dashboard", "Instructor console"]
             }
           ]
         },
         {
-          "name": "Pruebas prácticas y retroalimentación",
+          "name": "Practical tests and feedback",
           "activities": [
             {
               "step": 7,
-              "description": "Se lanzan laboratorios o retos supervisados vinculados al contenido teórico.",
-              "tools": ["Random Education Platform - Practical Labs", "Entorno CyberRangeCZ"]
+              "description": "Supervised labs or challenges linked to the theoretical content are launched.",
+              "tools": ["Random Education Platform - Practical Labs", "CyberRangeCZ environment"]
             },
             {
               "step": 8,
-              "description": "La REP consolida resultados y genera un informe que el instructor utiliza para la retroalimentación final.",
-              "tools": ["Random Education Platform - Reporting", "Panel del instructor"]
+              "description": "REP consolidates results and produces a report the instructor uses for the final feedback session.",
+              "tools": ["Random Education Platform - Reporting", "Instructor dashboard"]
             }
           ]
         },
         {
-          "name": "Simulación de spear phishing multicanal",
+          "name": "Multi-channel spear phishing simulation",
           "activities": [
             {
               "step": 9,
-              "description": "El instructor activa una campaña de spear phishing que combina correo, SMS y voz para evaluar la respuesta inicial de los trainees.",
-              "tools": ["Simulador de spear phishing multicanal", "Integraciones de correo/SMS/VoIP de CyberRangeCZ"]
+              "description": "The instructor activates a spear phishing campaign combining email, SMS and voice to assess the trainees' initial response.",
+              "tools": ["Multi-channel spear phishing simulator", "CyberRangeCZ email/SMS/VoIP integrations"]
             },
             {
               "step": 10,
-              "description": "Los trainees inspeccionan los vectores de ataque, reportan indicadores sospechosos y documentan hallazgos en los formularios de la REP.",
-              "tools": ["Random Education Platform - Incident Forms", "Panel de telemetría de simulación"]
+              "description": "Trainees inspect attack vectors, report suspicious indicators and document findings in REP forms.",
+              "tools": ["Random Education Platform - Incident Forms", "Simulation telemetry dashboard"]
             }
           ]
         },
         {
-          "name": "Cadena de respuesta colaborativa",
+          "name": "Collaborative response chain",
           "activities": [
             {
               "step": 11,
-              "description": "Se crea una sala de coordinación para activar la cadena de respuesta, integrando chat seguro, videoconferencia y tablero de tareas en la REP.",
-              "tools": ["Random Education Platform - Collaboration Hub", "Tablero Kanban de incidentes"]
+              "description": "A coordination room is created to activate the response chain, integrating secure chat, videoconferencing and a task board in REP.",
+              "tools": ["Random Education Platform - Collaboration Hub", "Incident Kanban board"]
             },
             {
               "step": 12,
-              "description": "Los trainees asignan roles, comparten evidencias y validan contramedidas a través de la consola colaborativa del instructor.",
-              "tools": ["Consola colaborativa del instructor", "Repositorio compartido de evidencias"]
+              "description": "Trainees assign roles, share evidence and validate countermeasures through the instructor's collaborative console.",
+              "tools": ["Instructor collaborative console", "Shared evidence repository"]
             }
           ]
         },
         {
-          "name": "Informe forense exprés",
+          "name": "Express forensic report",
           "activities": [
             {
               "step": 13,
-              "description": "Se recolectan artefactos críticos del ejercicio (cabeceras, registros, capturas) para alimentar el informe exprés.",
-              "tools": ["Repositorio de artefactos forenses", "Exportador de registros de la REP"]
+              "description": "Critical artefacts from the exercise (headers, logs, captures) are collected to feed the express report.",
+              "tools": ["Forensic artefact repository", "REP log exporter"]
             },
             {
               "step": 14,
-              "description": "El instructor consolida hallazgos y recomendaciones en la plantilla de informe forense exprés y lo distribuye a los participantes.",
-              "tools": ["Plantillas de informe forense exprés", "Consola del instructor"]
+              "description": "The instructor compiles findings and recommendations in the express forensic report template and shares it with participants.",
+              "tools": ["Express forensic report templates", "Instructor console"]
             }
           ]
         }
@@ -115,100 +115,100 @@
     },
     {
       "id": "subcase-1d",
-      "title": "Subcaso 1d - Operación NG-SOC",
+      "title": "Subcase 1d - NG-SOC operation",
       "phases": [
         {
-          "name": "Monitorización y detección",
+          "name": "Monitoring and detection",
           "activities": [
             {
               "step": 1,
-              "description": "NG-SIEM recopila telemetría del entorno CyberRangeCZ y genera una alerta priorizada.",
+              "description": "NG-SIEM gathers telemetry from the CyberRangeCZ environment and raises a prioritised alert.",
               "tools": ["NG-SIEM"]
             },
             {
               "step": 2,
-              "description": "El analista de NG-SOC valida la alerta y selecciona el playbook CACAO apropiado.",
-              "tools": ["Consola NG-SOC", "Repositorio de playbooks CACAO"]
+              "description": "The NG-SOC analyst validates the alert and selects the appropriate CACAO playbook.",
+              "tools": ["NG-SOC console", "CACAO playbook repository"]
             }
           ]
         },
         {
-          "name": "Orquestación del playbook",
+          "name": "Playbook orchestration",
           "activities": [
             {
               "step": 3,
-              "description": "NG-SOC envía la orden de ejecución a NG-SOAR junto con los parámetros del incidente.",
+              "description": "NG-SOC sends the execution order to NG-SOAR together with the incident parameters.",
               "tools": ["NG-SOC Orchestrator", "NG-SOAR API"]
             },
             {
               "step": 4,
-              "description": "NG-SOAR interpreta la secuencia CACAO y prepara las acciones automáticas y manuales requeridas.",
-              "tools": ["NG-SOAR Engine", "Modelo CACAO"]
+              "description": "NG-SOAR interprets the CACAO sequence and prepares the required automated and manual actions.",
+              "tools": ["NG-SOAR Engine", "CACAO model"]
             },
             {
               "step": 5,
-              "description": "Se habilita el playbook CACAO específico contra ransomware, mapeando controles de contención y recuperación a los conectores disponibles.",
-              "tools": ["Repositorio de playbooks CACAO", "Plantilla CACAO Ransomware", "NG-SOAR Playbook Manager"]
+              "description": "The specific CACAO playbook against ransomware is enabled, mapping containment and recovery controls to the available connectors.",
+              "tools": ["CACAO playbook repository", "CACAO ransomware template", "NG-SOAR Playbook Manager"]
             }
           ]
         },
         {
-          "name": "Ejecución automatizada",
+          "name": "Automated execution",
           "activities": [
             {
               "step": 6,
-              "description": "El playbook ejecuta tareas de enriquecimiento, contención y notificación sobre los activos afectados.",
-              "tools": ["NG-SOAR Connectors", "Integraciones de endpoint y red"]
+              "description": "The playbook performs enrichment, containment and notification tasks on the affected assets.",
+              "tools": ["NG-SOAR connectors", "Endpoint and network integrations"]
             },
             {
               "step": 7,
-              "description": "Se registran métricas de tiempo de respuesta y efectividad para su seguimiento posterior.",
-              "tools": ["NG-SOAR Metrics", "Dashboard NG-SOC"]
+              "description": "Response time and effectiveness metrics are recorded for later tracking.",
+              "tools": ["NG-SOAR Metrics", "NG-SOC dashboard"]
             },
             {
               "step": 8,
-              "description": "Se ejecuta una prueba de resiliencia de conectores para validar la disponibilidad de integraciones críticas tras la contención.",
-              "tools": ["NG-SOAR Connector Health Check", "Monitor de integraciones NG-SOC"]
+              "description": "A connector resilience test is executed to confirm availability of critical integrations after containment.",
+              "tools": ["NG-SOAR Connector Health Check", "NG-SOC integration monitor"]
             }
           ]
         },
         {
-          "name": "Apoyo de sistemas transversales",
+          "name": "Support from transversal systems",
           "activities": [
             {
               "step": 9,
-              "description": "CICMS Operator centraliza evidencias y reportes asociados al incidente mientras se ejecuta el playbook.",
+              "description": "CICMS Operator centralises evidence and reports associated with the incident while the playbook is running.",
               "tools": ["CICMS Operator"]
             },
             {
               "step": 10,
-              "description": "CTI-SS aporta inteligencia de amenazas para enriquecer indicadores y decidir contramedidas.",
+              "description": "CTI-SS supplies threat intelligence to enrich indicators and determine countermeasures.",
               "tools": ["CTI-SS"]
             },
             {
               "step": 11,
-              "description": "La biblioteca de playbooks y estándares (NVD/NIST, MITRE ATT&CK) guía la adaptación del plan de respuesta.",
-              "tools": ["Biblioteca de playbooks/estándares"]
+              "description": "The playbook and standards library (NVD/NIST, MITRE ATT&CK) guides the adaptation of the response plan.",
+              "tools": ["Playbook/standards library"]
             }
           ]
         },
         {
-          "name": "Cierre y retroalimentación",
+          "name": "Closure and feedback",
           "activities": [
             {
               "step": 12,
-              "description": "NG-SOAR actualiza el estado del incidente en NG-SOC/NG-SIEM y consolida la documentación del caso.",
-              "tools": ["NG-SOAR", "Consola NG-SOC", "NG-SIEM"]
+              "description": "NG-SOAR updates the incident status in NG-SOC/NG-SIEM and consolidates the case documentation.",
+              "tools": ["NG-SOAR", "NG-SOC console", "NG-SIEM"]
             },
             {
               "step": 13,
-              "description": "CICMS Operator consolida el reporte post-incidente y enlaza las lecciones aprendidas en la biblioteca de playbooks.",
-              "tools": ["CICMS Operator", "Biblioteca de playbooks/estándares"]
+              "description": "CICMS Operator compiles the post-incident report and links the lessons learnt in the playbook library.",
+              "tools": ["CICMS Operator", "Playbook/standards library"]
             },
             {
               "step": 14,
-              "description": "Se activa la mesa de control post-incidente para presentar hallazgos técnicos, validar acciones correctivas y planificar la mejora continua.",
-              "tools": ["Mesa de control NG-SOC", "Dashboard ejecutivo", "Repositorio de lecciones aprendidas"]
+              "description": "The post-incident control board is convened to present technical findings, validate corrective actions and plan continual improvement.",
+              "tools": ["NG-SOC control board", "Executive dashboard", "Lessons-learnt repository"]
             }
           ]
         }

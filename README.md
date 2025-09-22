@@ -1,51 +1,51 @@
-# CyberRangeCZ - Ejercicios prácticos
+# CyberRangeCZ - Practical Exercises
 
-Este repositorio recopila únicamente los materiales necesarios para ejecutar los ejercicios prácticos de la iniciativa **CyberRangeCZ**. No incluye infraestructuras genéricas ni dependencias del laboratorio KYPO; todo el contenido está centrado en los flujos operativos actualmente validados para los subcasos 1a y 1d del diagrama de arquitectura.
+This repository gathers only the materials required to run the practical exercises of the **CyberRangeCZ** initiative. It does not include generic infrastructure or dependencies from the KYPO laboratory; every asset focuses on the operational workflows currently validated for subcases 1a and 1d of the architecture diagram.
 
-## Alcance de los ejercicios
+## Scope of the exercises
 
-- **Subcaso 1a – Entrenamiento guiado por instructor**: describe la dinámica educativa combinando al instructor, la plataforma Random Education Platform (REP) y los/las participantes.
-- **Subcaso 1d – Operación NG-SOC**: documenta cómo los componentes NG-SOC/NG-SIEM y NG-SOAR coordinan la respuesta automatizada apoyándose en el operador CICMS, CTI-SS y la biblioteca de playbooks/estándares (NVD/NIST, MITRE ATT&CK).
+- **Subcase 1a – Instructor-led training**: outlines the educational dynamic involving the instructor, the Random Education Platform (REP) and the participants.
+- **Subcase 1d – NG-SOC operation**: documents how the NG-SOC/NG-SIEM and NG-SOAR components coordinate the automated response with support from the CICMS Operator, CTI-SS and the playbook/standards library (NVD/NIST, MITRE ATT&CK).
 
-A continuación se resume el flujo detallado de cada subcaso para facilitar su reproducción durante las sesiones prácticas.
+The detailed flow for each subcase is summarised below to facilitate reproduction during the practical sessions.
 
-## Flujo del Subcaso 1a
+## Subcase 1a flow
 
-1. **Preparación del instructor**  
-   - El instructor revisa la guía del ejercicio y configura la sesión en la REP con los módulos correspondientes al tema del día.  
-   - Se habilitan las herramientas colaborativas (chat, videoconferencia, pizarra digital) que acompañarán la sesión.
-2. **Sesión en la Random Education Platform (REP)**  
-   - El instructor inicia la transmisión del contenido y comparte los objetivos.  
-   - La REP asigna automáticamente a cada participante un itinerario personalizado combinando teoría breve, escenarios simulados y recordatorios de buenas prácticas.
-3. **Cuestionarios formativos para trainees**  
-   - Los/las trainees completan cuestionarios interactivos en la REP para validar la comprensión inmediata.  
-   - El instructor monitoriza en tiempo real los resultados y ofrece retroalimentación puntual.
-4. **Pruebas prácticas evaluadas**  
-   - La REP genera ejercicios prácticos supervisados (laboratorios virtuales o retos breves).  
-   - Los resultados se registran y se consolidan en un reporte que el instructor revisa con el grupo durante la retroalimentación final.
+1. **Instructor preparation**
+   - The instructor reviews the exercise guide and configures the session in the REP with the modules that match the topic of the day.
+   - Collaborative tools (chat, videoconferencing, digital whiteboard) that accompany the session are enabled.
+2. **Session on the Random Education Platform (REP)**
+   - The instructor starts broadcasting the content and shares the objectives.
+   - The REP automatically assigns each participant a personalised itinerary that combines short theory, simulated scenarios and reminders of good practice.
+3. **Formative quizzes for trainees**
+   - Trainees complete interactive quizzes in the REP to validate immediate understanding.
+   - The instructor monitors the results in real time and provides targeted feedback.
+4. **Assessed practical tests**
+   - The REP generates supervised practical exercises (virtual labs or short challenges).
+   - The results are recorded and consolidated into a report that the instructor reviews with the group during the final feedback.
 
-## Flujo del Subcaso 1d
+## Subcase 1d flow
 
-1. **Detección en NG-SOC/NG-SIEM**  
-   - NG-SIEM recibe eventos desde las fuentes de telemetría del CyberRangeCZ y genera alertas priorizadas.  
-   - El analista de NG-SOC valida la alerta y selecciona el playbook CACAO pertinente.
-2. **Orquestación de playbooks CACAO**  
-   - El orquestador NG-SOC invoca el NG-SOAR para ejecutar el playbook seleccionado.  
-   - NG-SOAR coordina tareas automáticas (enriquecimiento, contención y notificación) respetando la secuencia definida en CACAO.
-3. **Apoyo de sistemas transversales**
-   - **CICMS Operator** centraliza la documentación del incidente y canaliza los reportes posteriores.
-   - **CTI-SS** aporta inteligencia de amenazas y contexto adicional para la toma de decisiones.
-   - **Biblioteca de playbooks y estándares (NVD/NIST, MITRE ATT&CK)** guía la selección de acciones de respuesta y recuperación.
-4. **Cierre y retroalimentación**
-   - NG-SOAR consolida los resultados y devuelve el estado final a NG-SOC/NG-SIEM.
-   - CICMS Operator genera el reporte post-incidente y referencia las lecciones aprendidas en la biblioteca de playbooks.
+1. **Detection in NG-SOC/NG-SIEM**
+   - NG-SIEM receives events from CyberRangeCZ telemetry sources and raises prioritised alerts.
+   - The NG-SOC analyst validates the alert and selects the relevant CACAO playbook.
+2. **CACAO playbook orchestration**
+   - The NG-SOC orchestrator invokes NG-SOAR to run the chosen playbook.
+   - NG-SOAR coordinates automated tasks (enrichment, containment and notification) following the CACAO sequence.
+3. **Support from transversal systems**
+   - **CICMS Operator** centralises incident documentation and channels post-incident reports.
+   - **CTI-SS** provides threat intelligence and additional context for decision-making.
+   - **Playbook and standards library (NVD/NIST, MITRE ATT&CK)** guides the selection of response and recovery actions.
+4. **Closure and feedback**
+   - NG-SOAR consolidates the outcomes and returns the final status to NG-SOC/NG-SIEM.
+   - CICMS Operator produces the post-incident report and references lessons learnt in the playbook library.
 
-## Archivos principales
+## Key files
 
-- `training_linear.json`: lista los módulos de aprendizaje de los subcasos 1a y 1d, con actividades paso a paso y herramientas implicadas.
-- `topology.yml`: describe los componentes del CyberRangeCZ relevantes para los ejercicios y su integración con las herramientas educativas y operativas.
-- `docs/`: materiales de apoyo y guías complementarias.
+- `training_linear.json`: lists the learning modules for subcases 1a and 1d, including step-by-step activities and the tools involved.
+- `topology.yml`: describes the CyberRangeCZ components relevant to the exercises and how they integrate with the educational and operational tooling.
+- `docs/`: support materials and complementary guides.
 
-## Licencia
+## Licence
 
-El contenido se entrega con fines estrictamente educativos dentro del marco de CyberRangeCZ.
+The content is provided strictly for educational purposes within the CyberRangeCZ framework.

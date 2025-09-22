@@ -1,8 +1,8 @@
-# Artefactos de habilitación para CyberRangeCZ
+# Enablement artefacts for CyberRangeCZ
 
-Este directorio ya no contiene playbooks de aprovisionamiento. En su lugar alberga artefactos de referencia para habilitar la Random Education Platform (REP) y los servicios NG-SOC/NG-SIEM/NG-SOAR/CICMS Operator/CTI-SS/Biblioteca de playbooks descritos en el Subcaso 1d.
+This directory no longer contains provisioning playbooks. Instead, it hosts reference artefacts that enable the Random Education Platform (REP) and the NG-SOC/NG-SIEM/NG-SOAR/CICMS Operator/CTI-SS/Playbook Library services described in Subcase 1d.
 
-- `subcase-1d-services.md` documenta cómo activar y relacionar cada componente.
-- `cacao-playbook-automation.md` describe los procedimientos automatizados para la gestión del ciclo de vida de playbooks CACAO dentro de NG-SOAR y su integración con CICMS Operator, CTI-SS y la biblioteca de playbooks.
+- `subcase-1d-services.md` documents how to activate and connect each component.
+- `cacao-playbook-automation.md` sets out the automated procedures for managing the CACAO playbook lifecycle within NG-SOAR and its integration with CICMS Operator, CTI-SS and the playbook library.
 
-Cada artefacto se centra exclusivamente en las capacidades mostradas en el diagrama de subcasos y omite dependencias con herramientas externas ajenas al ecosistema NG.
+Each artefact focuses exclusively on the capabilities shown in the subcase diagram and omits dependencies on external tooling unrelated to the NG ecosystem.
