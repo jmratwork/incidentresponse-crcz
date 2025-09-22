@@ -1,6 +1,6 @@
 # CyberRangeCZ - Practical Exercises
 
-This repository gathers only the materials required to run the practical exercises of the **CyberRangeCZ** initiative. It does not include generic infrastructure or dependencies from the KYPO laboratory; every asset focuses on the operational workflows currently validated for subcases 1a and 1d of the architecture diagram.
+This repository gathers only the materials required to run the practical exercises of the **CyberRangeCZ** initiative. It does not include generic infrastructure or dependencies from the KYPO/CRCZ laboratory; every asset focuses on the operational workflows currently validated for subcases 1a and 1d of the architecture diagram.
 
 ## Scope of the exercises
 
@@ -52,7 +52,7 @@ Ver Figura 6 para el diagrama completo de actividades CYNET.
 - `topology.yml`: describes the CyberRangeCZ components relevant to the exercises and how they integrate with the educational and operational tooling.
 - `docs/`: support materials and complementary guides. `docs/provisioning-guide.md` explains how to deploy the infrastructure required for each subcase.
 - `inventory.sample`: template inventory with placeholder credentials; load secrets at runtime via Ansible Vault or environment variables instead of committing them to version control.
-- `provisioning/`: KYPO topology files and Ansible playbooks that replicate the infrastructure defined in the CYNET activity diagram for the 1a and 1d flows.
+- `provisioning/`: KYPO/CRCZ topology files and Ansible playbooks that replicate the infrastructure defined in the CYNET activity diagram for the 1a and 1d flows.
 
 ## Credential management
 
