@@ -1,0 +1,8 @@
+filebeat.modules:
+  - module: wazuh
+    alerts:
+      enabled: true
+      var.paths: ['/var/log/wazuh/alerts/alerts.json']
+
+output.elasticsearch:
+  hosts: ['localhost:9200']

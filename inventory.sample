@@ -1,0 +1,21 @@
+[attacker]
+attacker ansible_host=10.10.30.10 ansible_user=kali ansible_password=kali
+
+[soc_server]
+soc-server ansible_host=10.10.20.10 ansible_user=ubuntu ansible_password=ubuntu
+
+[user_pc]
+user-pc ansible_host=10.10.10.50 ansible_user=IEUser ansible_password=Passw0rd!
+
+[user_pc:vars]
+ansible_connection=winrm
+ansible_port=5985
+ansible_winrm_scheme=http
+ansible_winrm_transport=basic
+ansible_winrm_server_cert_validation=ignore
+
+[internal_server]
+internal-server ansible_host=10.10.10.60 ansible_user=ubuntu ansible_password=ubuntu
+
+[corp_router]
+corp-router ansible_host=10.10.10.1 ansible_user=debian ansible_password=debian

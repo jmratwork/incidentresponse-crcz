@@ -1,0 +1,49 @@
+{
+  "name": "Incident Response Training",
+  "topology": "topology.yml",
+  "description": "Incident response scenario where each role follows step-by-step instructions to investigate, contain and document the intrusion.",
+  "exercises": [
+    {
+      "name": "SOC Analyst",
+      "description": "Monitor the SIEM on `soc-server` and escalate suspicious activity to the response team.",
+      "tasks": [
+        {"question": "1. View the latest alerts with `sudo tail -n 5 /var/log/wazuh/alerts/alerts.json`. Which alert ID references `user-pc`?", "answer": "100001"},
+        {"question": "2. Run `netstat -tunap | grep 192.0.2.123`. Which process is communicating with the suspicious IP?", "answer": "wscript.exe"},
+        {"question": "3. Create a case in TheHive named `Suspicious login`. What status should the case be after creation?", "answer": "Open"}
+      ]
+    },
+    {
+      "name": "Incident Responder",
+      "description": "Contain the infected workstation and collect forensic evidence for analysis.",
+      "tasks": [
+        {"question": "1. On `user-pc`, run `winpmem_mini.exe -o C:\\evidence\\mem.raw`. What file path is created?", "answer": "C:\\evidence\\mem.raw"},
+        {"question": "2. Acquire the suspicious executable from `C:\\Users\\User\\AppData\\Temp`. What is the file name?", "answer": "malware.exe"},
+        {"question": "3. Analyze the memory image with `volatility -f mem.raw pslist | grep malware`. Which PID do you find?", "answer": "1337"}
+      ]
+    },
+    {
+      "name": "CTI Analyst",
+      "description": "Use MISP on `soc-server` to enrich indicators from the investigation.",
+      "tasks": [
+        {"question": "1. Log in to MISP and create an event with the hash of `malware.exe`. What event ID is assigned?", "answer": "1"},
+        {"question": "2. Search MISP for the domain `evil.example.com`. Which threat actor is linked to it?", "answer": "APT Example"}
+      ]
+    },
+    {
+      "name": "Pen Tester",
+      "description": "Confirm the vulnerability on `internal-server` and demonstrate exploitation in a controlled manner.",
+      "tasks": [
+        {"question": "1. From `attacker`, run `nmap -sV 10.10.10.60`. What Apache version is reported?", "answer": "2.4.49"},
+        {"question": "2. Use Metasploit module `exploit/multi/http/apache_path_traversal`. After exploitation, read `/tmp/proof.txt`. What string is inside?", "answer": "pwned"}
+      ]
+    },
+    {
+      "name": "IR Coordinator",
+      "description": "Document the incident timeline and coordinate case closure in TheHive.",
+      "tasks": [
+        {"question": "1. Summarise when containment was achieved based on team notes. Provide the HH:MM time.", "answer": "16:30"},
+        {"question": "2. Change the case status in TheHive to `Resolved`. What note do you add as the final summary?", "answer": "Incident handled"}
+      ]
+    }
+  ]
+}

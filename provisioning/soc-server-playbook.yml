@@ -1,0 +1,119 @@
+---
+- name: Configure SOC Server
+  hosts: soc_server
+  become: yes
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Add Elastic Stack GPG key
+      apt_key:
+        url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+        state: present
+
+    - name: Add Elastic Stack repository
+      apt_repository:
+        repo: "deb https://artifacts.elastic.co/packages/7.x/apt stable main"
+        state: present
+
+    - name: Add TheHive Project GPG key
+      apt_key:
+        url: https://deb.thehive-project.org/thehive-project.gpg.key
+        state: present
+
+    - name: Add TheHive and Cortex repository
+      apt_repository:
+        repo: "deb https://deb.thehive-project.org release main"
+        state: present
+
+    - name: Update apt cache after adding repos
+      apt:
+        update_cache: yes
+
+    - name: Install SIEM stack
+      apt:
+        name: [elasticsearch, kibana, logstash]
+        state: present
+    - name: Install TheHive and Cortex
+      apt:
+        name: [openjdk-11-jdk, cassandra, thehive, cortex]
+        state: present
+
+    - name: Add Wazuh GPG key
+      apt_key:
+        url: https://packages.wazuh.com/key/GPG-KEY-WAZUH
+        state: present
+
+    - name: Add Wazuh repository
+      apt_repository:
+        repo: "deb https://packages.wazuh.com/4.x/apt/ stable main"
+        state: present
+
+    - name: Update apt cache after adding Wazuh repo
+      apt:
+        update_cache: yes
+
+    - name: Install Wazuh manager, agent and Filebeat
+      apt:
+        name:
+          - wazuh-manager
+          - wazuh-agent
+          - filebeat
+        state: present
+
+    - name: Configure Filebeat for Wazuh
+      copy:
+        src: files/filebeat.yml
+        dest: /etc/filebeat/filebeat.yml
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Enable Wazuh module
+      command: /usr/bin/filebeat modules enable wazuh
+      args:
+        creates: /etc/filebeat/modules.d/wazuh.yml
+
+    - name: Ensure /var/log/wazuh path exists
+      file:
+        src: /var/ossec/logs
+        dest: /var/log/wazuh
+        state: link
+        force: yes
+
+    - name: Start Wazuh and Filebeat services
+      systemd:
+        name: "{{ item }}"
+        enabled: yes
+        state: started
+      loop:
+        - wazuh-manager
+        - wazuh-agent
+        - filebeat
+    - name: Clone MISP repository
+      git:
+        repo: https://github.com/MISP/MISP.git
+        dest: /opt/MISP
+        version: 2.4
+
+    - name: Install MISP dependencies
+      shell: ./INSTALL/install_dependencies.sh
+      args:
+        chdir: /opt/MISP
+      environment:
+        DEBIAN_FRONTEND: noninteractive
+
+    - name: Install MISP
+      shell: ./INSTALL/install_misp.sh --no-interactive
+      args:
+        chdir: /opt/MISP
+      environment:
+        DEBIAN_FRONTEND: noninteractive
+    - name: Configure integrations
+      copy:
+        src: files/application.conf
+        dest: /etc/thehive/application.conf
+        owner: root
+        group: root
+        mode: '0644'

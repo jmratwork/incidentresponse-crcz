@@ -1,0 +1,78 @@
+---
+- name: Configure Internal Server
+  hosts: internal_server
+  become: yes
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install build dependencies
+      apt:
+        name:
+          - build-essential
+          - libpcre3
+          - libpcre3-dev
+          - libssl-dev
+          - libapr1-dev
+          - libaprutil1-dev
+          - php
+          - php-cli
+          - php-dev
+          - libapache2-mod-php
+          - wget
+        state: present
+
+    - name: Download Apache 2.4.49 source
+      get_url:
+        url: https://archive.apache.org/dist/httpd/httpd-2.4.49.tar.gz
+        dest: /tmp/httpd-2.4.49.tar.gz
+        mode: '0644'
+
+    - name: Extract Apache source
+      unarchive:
+        src: /tmp/httpd-2.4.49.tar.gz
+        dest: /tmp
+        remote_src: yes
+
+    - name: Compile and install Apache
+      shell: |
+        cd /tmp/httpd-2.4.49 && ./configure --prefix=/usr/local/apache2 && make && make install
+      args:
+        creates: /usr/local/apache2/bin/httpd
+
+    - name: Symlink apachectl
+      file:
+        src: /usr/local/apache2/bin/apachectl
+        dest: /usr/bin/apachectl
+        state: link
+
+    - name: Create systemd service for Apache
+      copy:
+        dest: /etc/systemd/system/apache.service
+        content: |
+          [Unit]
+          Description=Apache HTTP Server
+          After=network.target
+          [Service]
+          Type=forking
+          ExecStart=/usr/bin/apachectl start
+          ExecStop=/usr/bin/apachectl stop
+          PIDFile=/usr/local/apache2/logs/httpd.pid
+          [Install]
+          WantedBy=multi-user.target
+
+    - name: Reload systemd
+      systemd:
+        daemon_reload: yes
+
+    - name: Ensure Apache service running
+      systemd:
+        name: apache.service
+        enabled: yes
+        state: started
+
+    - name: Create fake customer data
+      copy:
+        content: "Name,AccountNumber\nJohn Doe,123456"
+        dest: /usr/local/apache2/htdocs/data.csv
