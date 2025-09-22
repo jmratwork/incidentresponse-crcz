@@ -37,41 +37,34 @@ components:
     integrations:
       - ng_siem
       - ng_soar
-      - bpms
-      - kms
+      - cicms_operator
+      - playbook_library
   ng_siem:
     purpose: "Plataforma de correlación y priorización de eventos."
     integrations:
       - ng_soc
-      - cmdb
       - cti_ss
   ng_soar:
     purpose: "Motor de ejecución de playbooks CACAO."
     integrations:
       - ng_soc
-      - bpms
-      - cmdb
       - cti_ss
-      - kms
-  bpms:
-    purpose: "Orquestación de aprobaciones y tareas manuales dentro del flujo de respuesta."
-    integrations:
-      - ng_soc
-      - ng_soar
-      - kms
-  cmdb:
-    purpose: "Repositorio de activos y dependencias para contextualizar la respuesta."
-    integrations:
-      - ng_siem
-      - ng_soar
+      - cicms_operator
+      - playbook_library
   cti_ss:
     purpose: "Servicio de inteligencia de amenazas que enriquece indicadores."
     integrations:
       - ng_siem
       - ng_soar
-  kms:
-    purpose: "Gestión del conocimiento y lecciones aprendidas derivadas de los ejercicios."
+  cicms_operator:
+    purpose: "Operador que consolida evidencias, reportes y validaciones manuales del incidente."
     integrations:
       - ng_soc
       - ng_soar
-      - bpms
+      - playbook_library
+  playbook_library:
+    purpose: "Repositorio de playbooks y estándares (NVD/NIST, MITRE ATT&CK) usado para guiar la respuesta."
+    integrations:
+      - ng_soc
+      - ng_soar
+      - cicms_operator
