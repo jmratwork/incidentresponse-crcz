@@ -1,4 +1,4 @@
-# CyberRangeCZ - Practical Exercises
+# incidentresponse-crcz
 
 This repository gathers only the materials required to run the practical exercises of the **CyberRangeCZ** initiative. It does not include generic infrastructure or dependencies from the KYPO/CRCZ laboratory; every asset focuses on the operational workflows currently validated for CYNET subcases 1a and 1d of the architecture diagram.
 
