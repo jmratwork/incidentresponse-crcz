@@ -1,8 +1,8 @@
 # Provisioning workflow for subcases 1a and 1d
 
-This guide explains how to instantiate the CyberRangeCZ infrastructure aligned with the CYNET activity diagram. The process is divided into two phases: importing the KYPO topology and configuring the virtual machines with Ansible.
+This guide explains how to instantiate the CyberRangeCZ infrastructure aligned with the CYNET activity diagram. The process is divided into two phases: importing the KYPO/CRCZ topology and configuring the virtual machines with Ansible.
 
-## 1. Import the topology in KYPO
+## 1. Import the topology in KYPO/CRCZ
 
 1. Sign in to the KYPO portal with an account that can create sandboxes.
 2. For subcase **1a**, upload `provisioning/subcase-1a-topology.yml`. The topology creates:
@@ -13,7 +13,7 @@ This guide explains how to instantiate the CyberRangeCZ infrastructure aligned w
    - Core NG-SOC hosts (`ng-soc`, `ng-siem`, `ng-soar`).
    - Supporting services (`cti-ss`, `cicms-operator`, `playbook-library`, `telemetry-simulator`).
    - Segmented networks that emulate the SOC, automation, intelligence, coordination and telemetry zones.
-4. Deploy the sandbox and wait for KYPO to report that all machines are reachable.
+4. Deploy the sandbox and wait for KYPO/CRCZ to report that all machines are reachable.
 
 ## 2. Prepare credentials
 
