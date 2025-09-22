@@ -1,0 +1,21 @@
+---
+- name: Install reporting workspace packages
+  ansible.builtin.apt:
+    name: "{{ reporting_workspace_packages | default(['postgresql', 'grafana']) }}"
+    state: present
+    update_cache: true
+
+- name: Ensure grafana service is enabled
+  ansible.builtin.service:
+    name: grafana-server
+    enabled: true
+    state: started
+  when: "'grafana' in (reporting_workspace_packages | default(['postgresql', 'grafana']))"
+
+- name: Create analytics data directory
+  ansible.builtin.file:
+    path: /var/lib/reporting-workspace
+    state: directory
+    owner: postgres
+    group: postgres
+    mode: '0750'

@@ -1,0 +1,24 @@
+---
+- name: Install telemetry simulator packages
+  ansible.builtin.apt:
+    name: "{{ telemetry_feeder_packages | default(['python3-venv', 'rsyslog']) }}"
+    state: present
+    update_cache: true
+
+- name: Create telemetry scenario directory
+  ansible.builtin.file:
+    path: /opt/telemetry-simulator/scenarios
+    state: directory
+    owner: ubuntu
+    group: ubuntu
+    mode: '0755'
+
+- name: Provide sample log generator script
+  ansible.builtin.copy:
+    dest: /opt/telemetry-simulator/scenarios/generate.sh
+    content: |
+      #!/usr/bin/env bash
+      logger "CyberRangeCZ telemetry event: $(date --iso-8601=seconds)"
+    owner: ubuntu
+    group: ubuntu
+    mode: '0755'

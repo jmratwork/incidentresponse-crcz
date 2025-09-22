@@ -1,0 +1,24 @@
+---
+- name: Configure REP core services
+  hosts: rep_core
+  become: true
+  roles:
+    - role: rep_core
+
+- name: Prepare the reporting workspace analytics stack
+  hosts: reporting_workspace
+  become: true
+  roles:
+    - role: reporting_workspace
+
+- name: Personalise the instructor console
+  hosts: instructor_console
+  become: true
+  roles:
+    - role: instructor_console
+
+- name: Stage trainee lab resources
+  hosts: trainees
+  gather_facts: false
+  roles:
+    - role: trainee_workstation

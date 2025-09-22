@@ -44,8 +44,9 @@ The detailed flow for each subcase is summarised below to facilitate reproductio
 
 - `training_linear.json`: lists the learning modules for subcases 1a and 1d, including step-by-step activities and the tools involved.
 - `topology.yml`: describes the CyberRangeCZ components relevant to the exercises and how they integrate with the educational and operational tooling.
-- `docs/`: support materials and complementary guides.
+- `docs/`: support materials and complementary guides. `docs/provisioning-guide.md` explains how to deploy the infrastructure required for each subcase.
 - `inventory.sample`: template inventory with placeholder credentials; load secrets at runtime via Ansible Vault or environment variables instead of committing them to version control.
+- `provisioning/`: KYPO topology files and Ansible playbooks that replicate the infrastructure defined in the CYNET activity diagram for the 1a and 1d flows.
 
 ## Credential management
 

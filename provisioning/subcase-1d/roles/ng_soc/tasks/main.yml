@@ -1,0 +1,20 @@
+---
+- name: Install NG-SOC required packages
+  ansible.builtin.apt:
+    name: "{{ ng_soc_packages | default(['docker.io', 'python3-pip']) }}"
+    state: present
+    update_cache: true
+
+- name: Ensure docker service is running
+  ansible.builtin.service:
+    name: docker
+    enabled: true
+    state: started
+
+- name: Configure NG-SOC workspace directory
+  ansible.builtin.file:
+    path: /opt/ng-soc/workspace
+    state: directory
+    owner: ubuntu
+    group: ubuntu
+    mode: '0755'

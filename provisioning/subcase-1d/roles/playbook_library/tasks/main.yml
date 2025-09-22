@@ -1,0 +1,27 @@
+---
+- name: Install playbook library packages
+  ansible.builtin.apt:
+    name: "{{ playbook_library_packages | default(['git', 'nginx']) }}"
+    state: present
+    update_cache: true
+
+- name: Ensure nginx service is enabled
+  ansible.builtin.service:
+    name: nginx
+    enabled: true
+    state: started
+
+- name: Publish reference index
+  ansible.builtin.copy:
+    dest: /var/www/html/index.html
+    content: |
+      <html>
+      <head><title>CyberRangeCZ Playbook Library</title></head>
+      <body>
+        <h1>CyberRangeCZ Playbook Library</h1>
+        <p>Use this portal to document CACAO playbooks, MITRE ATT&CK coverage and NVD/NIST references.</p>
+      </body>
+      </html>
+    owner: www-data
+    group: www-data
+    mode: '0644'

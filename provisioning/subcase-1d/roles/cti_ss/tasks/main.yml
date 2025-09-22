@@ -1,0 +1,26 @@
+---
+- name: Install CTI-SS dependencies
+  ansible.builtin.apt:
+    name: "{{ cti_ss_packages | default(['python3-requests', 'jq']) }}"
+    state: present
+    update_cache: true
+
+- name: Configure indicator cache directory
+  ansible.builtin.file:
+    path: /opt/cti-ss/cache
+    state: directory
+    owner: ubuntu
+    group: ubuntu
+    mode: '0755'
+
+- name: Seed indicator catalogue
+  ansible.builtin.copy:
+    dest: /opt/cti-ss/cache/indicators.json
+    content: |
+      {
+        "description": "Sample CTI dataset for CyberRangeCZ exercises",
+        "indicators": []
+      }
+    owner: ubuntu
+    group: ubuntu
+    mode: '0644'

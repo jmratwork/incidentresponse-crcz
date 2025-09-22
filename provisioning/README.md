@@ -1,8 +1,17 @@
-# Enablement artefacts for CyberRangeCZ
+# Provisioning artefacts for CyberRangeCZ
 
-This directory no longer contains provisioning playbooks. Instead, it hosts reference artefacts that enable the Random Education Platform (REP) and the NG-SOC/NG-SIEM/NG-SOAR/CICMS Operator/CTI-SS/Playbook Library services described in Subcase 1d.
+The `provisioning/` directory contains topology definitions and Ansible playbooks that reproduce the infrastructure flows of subcases 1a and 1d from the CYNET activity diagram.
 
-- `subcase-1d-services.md` documents how to activate and connect each component.
-- `cacao-playbook-automation.md` sets out the automated procedures for managing the CACAO playbook lifecycle within NG-SOAR and its integration with CICMS Operator, CTI-SS and the playbook library.
+## Topology files
 
-Each artefact focuses exclusively on the capabilities shown in the subcase diagram and omits dependencies on external tooling unrelated to the NG ecosystem.
+- `subcase-1a-topology.yml` – KYPO topology describing the Random Education Platform (REP) components used in the phishing awareness exercise.
+- `subcase-1d-topology.yml` – KYPO topology for the NG-SOC, NG-SIEM, NG-SOAR, CTI-SS, CICMS Operator, playbook library and telemetry simulator services.
+
+These files can be imported into KYPO to instantiate the virtual machines, routers and networks ahead of running the configuration playbooks.
+
+## Playbooks
+
+- `subcase-1a/` – Roles and site playbook that prepare REP backends, the instructor console, trainee workstations and the reporting workspace.
+- `subcase-1d/` – Roles and site playbook to configure NG-SOC automation components, intelligence services and the telemetry generator.
+
+Each subdirectory includes a README with prerequisites, variable references and execution instructions. Install the required Ansible collections before running the playbooks and store credentials using Ansible Vault or environment variables instead of plain text files.

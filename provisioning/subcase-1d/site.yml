@@ -1,0 +1,49 @@
+---
+- name: Configure NG-SOC analyst console
+  hosts: ng_soc
+  become: true
+  roles:
+    - role: ng_soc
+      tags: ng_soc
+
+- name: Prepare NG-SIEM correlation engine
+  hosts: ng_siem
+  become: true
+  roles:
+    - role: ng_siem
+      tags: ng_siem
+
+- name: Deploy NG-SOAR automation stack
+  hosts: ng_soar
+  become: true
+  roles:
+    - role: ng_soar
+      tags: ng_soar
+
+- name: Enable CTI-SS enrichment services
+  hosts: cti_ss
+  become: true
+  roles:
+    - role: cti_ss
+      tags: cti_ss
+
+- name: Configure CICMS operator workspace
+  hosts: cicms
+  become: true
+  roles:
+    - role: cicms
+      tags: cicms
+
+- name: Publish playbook library portal
+  hosts: playbook_library
+  become: true
+  roles:
+    - role: playbook_library
+      tags: playbook_library
+
+- name: Start telemetry simulator feeds
+  hosts: telemetry_feeder
+  become: true
+  roles:
+    - role: telemetry_feeder
+      tags: telemetry_feeder

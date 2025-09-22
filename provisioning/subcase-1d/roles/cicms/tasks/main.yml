@@ -1,0 +1,26 @@
+---
+- name: Install CICMS tooling
+  ansible.builtin.apt:
+    name: "{{ cicms_packages | default(['postgresql-client', 'curl']) }}"
+    state: present
+    update_cache: true
+
+- name: Create CICMS document repository
+  ansible.builtin.file:
+    path: /opt/cicms/documents
+    state: directory
+    owner: ubuntu
+    group: ubuntu
+    mode: '0755'
+
+- name: Deploy status template
+  ansible.builtin.copy:
+    dest: /opt/cicms/documents/status-template.md
+    content: |
+      # Incident status template
+      - Phase:
+      - Owner:
+      - Evidence reference:
+    owner: ubuntu
+    group: ubuntu
+    mode: '0644'
