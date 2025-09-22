@@ -4,8 +4,8 @@ The `provisioning/` directory contains topology definitions and Ansible playbook
 
 ## Topology files
 
-- `subcase-1a-topology.yml` – KYPO topology describing the Random Education Platform (REP) components used in the phishing awareness exercise.
-- `subcase-1d-topology.yml` – KYPO topology for the NG-SOC, NG-SIEM, NG-SOAR, CTI-SS, CICMS Operator, playbook library and telemetry simulator services.
+- `subcase-1a-topology.yml` – KYPO/CRCZ topology describing the Random Education Platform (REP) components used in the phishing awareness exercise.
+- `subcase-1d-topology.yml` – KYPO/CRCZ topology for the NG-SOC, NG-SIEM, NG-SOAR, CTI-SS, CICMS Operator, playbook library and telemetry simulator services.
 
 These files can be imported into KYPO to instantiate the virtual machines, routers and networks ahead of running the configuration playbooks.
 
