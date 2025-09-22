@@ -5,7 +5,7 @@ Este repositorio recopila únicamente los materiales necesarios para ejecutar lo
 ## Alcance de los ejercicios
 
 - **Subcaso 1a – Entrenamiento guiado por instructor**: describe la dinámica educativa combinando al instructor, la plataforma Random Education Platform (REP) y los/las participantes.
-- **Subcaso 1d – Operación NG-SOC**: documenta cómo los componentes NG-SOC/NG-SIEM y NG-SOAR coordinan la respuesta automatizada apoyándose en BPMS, CMDB, CTI-SS y el KMS.
+- **Subcaso 1d – Operación NG-SOC**: documenta cómo los componentes NG-SOC/NG-SIEM y NG-SOAR coordinan la respuesta automatizada apoyándose en el operador CICMS, CTI-SS y la biblioteca de playbooks/estándares (NVD/NIST, MITRE ATT&CK).
 
 A continuación se resume el flujo detallado de cada subcaso para facilitar su reproducción durante las sesiones prácticas.
 
@@ -32,14 +32,13 @@ A continuación se resume el flujo detallado de cada subcaso para facilitar su r
 2. **Orquestación de playbooks CACAO**  
    - El orquestador NG-SOC invoca el NG-SOAR para ejecutar el playbook seleccionado.  
    - NG-SOAR coordina tareas automáticas (enriquecimiento, contención y notificación) respetando la secuencia definida en CACAO.
-3. **Apoyo de sistemas transversales**  
-   - **BPMS** gestiona aprobaciones y tareas manuales requeridas durante la respuesta.  
-   - **CMDB** provee información actualizada de activos y relaciones para orientar las acciones correctivas.  
-   - **CTI-SS** aporta inteligencia de amenazas y contexto adicional para la toma de decisiones.  
-   - **KMS** almacena y versiona los conocimientos derivados de la operación para futuras ejecuciones.
-4. **Cierre y retroalimentación**  
-   - NG-SOAR consolida los resultados y devuelve el estado final a NG-SOC/NG-SIEM.  
-   - BPMS actualiza el flujo administrativo, mientras que KMS registra las lecciones aprendidas.
+3. **Apoyo de sistemas transversales**
+   - **CICMS Operator** centraliza la documentación del incidente y canaliza los reportes posteriores.
+   - **CTI-SS** aporta inteligencia de amenazas y contexto adicional para la toma de decisiones.
+   - **Biblioteca de playbooks y estándares (NVD/NIST, MITRE ATT&CK)** guía la selección de acciones de respuesta y recuperación.
+4. **Cierre y retroalimentación**
+   - NG-SOAR consolida los resultados y devuelve el estado final a NG-SOC/NG-SIEM.
+   - CICMS Operator genera el reporte post-incidente y referencia las lecciones aprendidas en la biblioteca de playbooks.
 
 ## Archivos principales
 

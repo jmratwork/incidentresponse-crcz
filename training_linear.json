@@ -122,23 +122,18 @@
           "activities": [
             {
               "step": 7,
-              "description": "BPMS coordina aprobaciones y tareas manuales pendientes vinculadas al incidente.",
-              "tools": ["BPMS"]
+              "description": "CICMS Operator centraliza evidencias y reportes asociados al incidente mientras se ejecuta el playbook.",
+              "tools": ["CICMS Operator"]
             },
             {
               "step": 8,
-              "description": "CMDB ofrece contexto de activos críticos y dependencias para priorizar acciones.",
-              "tools": ["CMDB"]
-            },
-            {
-              "step": 9,
               "description": "CTI-SS aporta inteligencia de amenazas para enriquecer indicadores y decidir contramedidas.",
               "tools": ["CTI-SS"]
             },
             {
-              "step": 10,
-              "description": "KMS almacena procedimientos, lecciones aprendidas y evidencias de la ejecución del playbook.",
-              "tools": ["KMS"]
+              "step": 9,
+              "description": "La biblioteca de playbooks y estándares (NVD/NIST, MITRE ATT&CK) guía la adaptación del plan de respuesta.",
+              "tools": ["Biblioteca de playbooks/estándares"]
             }
           ]
         },
@@ -152,8 +147,8 @@
             },
             {
               "step": 12,
-              "description": "BPMS cierra las tareas administrativas y KMS publica el conocimiento generado para futuros ejercicios.",
-              "tools": ["BPMS", "KMS"]
+              "description": "CICMS Operator consolida el reporte post-incidente y enlaza las lecciones aprendidas en la biblioteca de playbooks.",
+              "tools": ["CICMS Operator", "Biblioteca de playbooks/estándares"]
             }
           ]
         }
