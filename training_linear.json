@@ -65,6 +65,51 @@
               "tools": ["Random Education Platform - Reporting", "Panel del instructor"]
             }
           ]
+        },
+        {
+          "name": "Simulación de spear phishing multicanal",
+          "activities": [
+            {
+              "step": 9,
+              "description": "El instructor activa una campaña de spear phishing que combina correo, SMS y voz para evaluar la respuesta inicial de los trainees.",
+              "tools": ["Simulador de spear phishing multicanal", "Integraciones de correo/SMS/VoIP de CyberRangeCZ"]
+            },
+            {
+              "step": 10,
+              "description": "Los trainees inspeccionan los vectores de ataque, reportan indicadores sospechosos y documentan hallazgos en los formularios de la REP.",
+              "tools": ["Random Education Platform - Incident Forms", "Panel de telemetría de simulación"]
+            }
+          ]
+        },
+        {
+          "name": "Cadena de respuesta colaborativa",
+          "activities": [
+            {
+              "step": 11,
+              "description": "Se crea una sala de coordinación para activar la cadena de respuesta, integrando chat seguro, videoconferencia y tablero de tareas en la REP.",
+              "tools": ["Random Education Platform - Collaboration Hub", "Tablero Kanban de incidentes"]
+            },
+            {
+              "step": 12,
+              "description": "Los trainees asignan roles, comparten evidencias y validan contramedidas a través de la consola colaborativa del instructor.",
+              "tools": ["Consola colaborativa del instructor", "Repositorio compartido de evidencias"]
+            }
+          ]
+        },
+        {
+          "name": "Informe forense exprés",
+          "activities": [
+            {
+              "step": 13,
+              "description": "Se recolectan artefactos críticos del ejercicio (cabeceras, registros, capturas) para alimentar el informe exprés.",
+              "tools": ["Repositorio de artefactos forenses", "Exportador de registros de la REP"]
+            },
+            {
+              "step": 14,
+              "description": "El instructor consolida hallazgos y recomendaciones en la plantilla de informe forense exprés y lo distribuye a los participantes.",
+              "tools": ["Plantillas de informe forense exprés", "Consola del instructor"]
+            }
+          ]
         }
       ]
     },
@@ -99,6 +144,11 @@
               "step": 4,
               "description": "NG-SOAR interpreta la secuencia CACAO y prepara las acciones automáticas y manuales requeridas.",
               "tools": ["NG-SOAR Engine", "Modelo CACAO"]
+            },
+            {
+              "step": 5,
+              "description": "Se habilita el playbook CACAO específico contra ransomware, mapeando controles de contención y recuperación a los conectores disponibles.",
+              "tools": ["Repositorio de playbooks CACAO", "Plantilla CACAO Ransomware", "NG-SOAR Playbook Manager"]
             }
           ]
         },
@@ -106,14 +156,19 @@
           "name": "Ejecución automatizada",
           "activities": [
             {
-              "step": 5,
+              "step": 6,
               "description": "El playbook ejecuta tareas de enriquecimiento, contención y notificación sobre los activos afectados.",
               "tools": ["NG-SOAR Connectors", "Integraciones de endpoint y red"]
             },
             {
-              "step": 6,
+              "step": 7,
               "description": "Se registran métricas de tiempo de respuesta y efectividad para su seguimiento posterior.",
               "tools": ["NG-SOAR Metrics", "Dashboard NG-SOC"]
+            },
+            {
+              "step": 8,
+              "description": "Se ejecuta una prueba de resiliencia de conectores para validar la disponibilidad de integraciones críticas tras la contención.",
+              "tools": ["NG-SOAR Connector Health Check", "Monitor de integraciones NG-SOC"]
             }
           ]
         },
@@ -121,17 +176,17 @@
           "name": "Apoyo de sistemas transversales",
           "activities": [
             {
-              "step": 7,
+              "step": 9,
               "description": "CICMS Operator centraliza evidencias y reportes asociados al incidente mientras se ejecuta el playbook.",
               "tools": ["CICMS Operator"]
             },
             {
-              "step": 8,
+              "step": 10,
               "description": "CTI-SS aporta inteligencia de amenazas para enriquecer indicadores y decidir contramedidas.",
               "tools": ["CTI-SS"]
             },
             {
-              "step": 9,
+              "step": 11,
               "description": "La biblioteca de playbooks y estándares (NVD/NIST, MITRE ATT&CK) guía la adaptación del plan de respuesta.",
               "tools": ["Biblioteca de playbooks/estándares"]
             }
@@ -141,14 +196,19 @@
           "name": "Cierre y retroalimentación",
           "activities": [
             {
-              "step": 11,
+              "step": 12,
               "description": "NG-SOAR actualiza el estado del incidente en NG-SOC/NG-SIEM y consolida la documentación del caso.",
               "tools": ["NG-SOAR", "Consola NG-SOC", "NG-SIEM"]
             },
             {
-              "step": 12,
+              "step": 13,
               "description": "CICMS Operator consolida el reporte post-incidente y enlaza las lecciones aprendidas en la biblioteca de playbooks.",
               "tools": ["CICMS Operator", "Biblioteca de playbooks/estándares"]
+            },
+            {
+              "step": 14,
+              "description": "Se activa la mesa de control post-incidente para presentar hallazgos técnicos, validar acciones correctivas y planificar la mejora continua.",
+              "tools": ["Mesa de control NG-SOC", "Dashboard ejecutivo", "Repositorio de lecciones aprendidas"]
             }
           ]
         }
