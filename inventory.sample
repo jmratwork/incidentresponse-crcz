@@ -1,7 +1,7 @@
 # NOTE: Store real credentials in Ansible Vault or environment variables before running playbooks.
 # Example: export ANSIBLE_PASSWORD_REP_SCHEDULER and reference it as ansible_password="{{ lookup('env', 'ANSIBLE_PASSWORD_REP_SCHEDULER') }}"
 
-[random_education_platform]
+[rep_core]
 rep-scheduler ansible_host=10.20.10.10 ansible_user=ubuntu ansible_password="{{ lookup('env', 'ANSIBLE_PASSWORD_REP_SCHEDULER') }}"
 rep-live-session ansible_host=10.20.10.20 ansible_user=ubuntu ansible_password="{{ lookup('env', 'ANSIBLE_PASSWORD_REP_LIVE') }}"
 rep-quiz-engine ansible_host=10.20.10.30 ansible_user=ubuntu ansible_password="{{ lookup('env', 'ANSIBLE_PASSWORD_REP_QUIZ') }}"
