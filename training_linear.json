@@ -1,48 +1,162 @@
 {
-  "name": "Incident Response Training",
-  "topology": "topology.yml",
-  "description": "Incident response scenario where each role follows step-by-step instructions to investigate, contain and document the intrusion.",
-  "exercises": [
+  "name": "CyberRangeCZ Practical Modules",
+  "description": "Secuencia de aprendizaje para los subcasos 1a y 1d del entorno CyberRangeCZ, orientada a instructores y equipos operativos.",
+  "modules": [
     {
-      "name": "SOC Analyst",
-      "description": "Monitor the SIEM on `soc-server` and escalate suspicious activity to the response team.",
-      "tasks": [
-        {"question": "1. View the latest alerts with `sudo tail -n 5 /var/log/wazuh/alerts/alerts.json`. Which alert ID references `user-pc`?", "answer": "100001"},
-        {"question": "2. Run `netstat -tunap | grep 192.0.2.123`. Which process is communicating with the suspicious IP?", "answer": "wscript.exe"},
-        {"question": "3. Create a case in TheHive named `Suspicious login`. What status should the case be after creation?", "answer": "Open"}
+      "id": "subcase-1a",
+      "title": "Subcaso 1a - Entrenamiento guiado por instructor",
+      "phases": [
+        {
+          "name": "Planificación de la sesión",
+          "activities": [
+            {
+              "step": 1,
+              "description": "El instructor define objetivos, materiales y tiempos de la sesión en el panel de control de CyberRangeCZ.",
+              "tools": ["Consola del instructor", "Repositorio de contenidos CyberRangeCZ"]
+            },
+            {
+              "step": 2,
+              "description": "Se programa la actividad en la Random Education Platform (REP) asignando los módulos introductorios.",
+              "tools": ["Random Education Platform - Scheduler"]
+            }
+          ]
+        },
+        {
+          "name": "Desarrollo de la clase en REP",
+          "activities": [
+            {
+              "step": 3,
+              "description": "El instructor inicia la sesión en vivo, presenta objetivos y activa los canales colaborativos (chat, videoconferencia, pizarra).",
+              "tools": ["Random Education Platform - Live Session", "Herramientas colaborativas integradas"]
+            },
+            {
+              "step": 4,
+              "description": "La REP distribuye automáticamente cápsulas teóricas breves y simulaciones guiadas a cada trainee.",
+              "tools": ["Random Education Platform - Content Delivery", "Simuladores CyberRangeCZ"]
+            }
+          ]
+        },
+        {
+          "name": "Cuestionarios formativos",
+          "activities": [
+            {
+              "step": 5,
+              "description": "Los trainees responden cuestionarios interactivos con feedback inmediato.",
+              "tools": ["Random Education Platform - Quiz Engine"]
+            },
+            {
+              "step": 6,
+              "description": "El instructor revisa los resultados en tiempo real para identificar dudas y reforzar los puntos clave.",
+              "tools": ["Panel analítico de la REP", "Consola del instructor"]
+            }
+          ]
+        },
+        {
+          "name": "Pruebas prácticas y retroalimentación",
+          "activities": [
+            {
+              "step": 7,
+              "description": "Se lanzan laboratorios o retos supervisados vinculados al contenido teórico.",
+              "tools": ["Random Education Platform - Practical Labs", "Entorno CyberRangeCZ"]
+            },
+            {
+              "step": 8,
+              "description": "La REP consolida resultados y genera un informe que el instructor utiliza para la retroalimentación final.",
+              "tools": ["Random Education Platform - Reporting", "Panel del instructor"]
+            }
+          ]
+        }
       ]
     },
     {
-      "name": "Incident Responder",
-      "description": "Contain the infected workstation and collect forensic evidence for analysis.",
-      "tasks": [
-        {"question": "1. On `user-pc`, run `winpmem_mini.exe -o C:\\evidence\\mem.raw`. What file path is created?", "answer": "C:\\evidence\\mem.raw"},
-        {"question": "2. Acquire the suspicious executable from `C:\\Users\\User\\AppData\\Temp`. What is the file name?", "answer": "malware.exe"},
-        {"question": "3. Analyze the memory image with `volatility -f mem.raw pslist | grep malware`. Which PID do you find?", "answer": "1337"}
-      ]
-    },
-    {
-      "name": "CTI Analyst",
-      "description": "Use MISP on `soc-server` to enrich indicators from the investigation.",
-      "tasks": [
-        {"question": "1. Log in to MISP and create an event with the hash of `malware.exe`. What event ID is assigned?", "answer": "1"},
-        {"question": "2. Search MISP for the domain `evil.example.com`. Which threat actor is linked to it?", "answer": "APT Example"}
-      ]
-    },
-    {
-      "name": "Pen Tester",
-      "description": "Confirm the vulnerability on `internal-server` and demonstrate exploitation in a controlled manner.",
-      "tasks": [
-        {"question": "1. From `attacker`, run `nmap -sV 10.10.10.60`. What Apache version is reported?", "answer": "2.4.49"},
-        {"question": "2. Use Metasploit module `exploit/multi/http/apache_path_traversal`. After exploitation, read `/tmp/proof.txt`. What string is inside?", "answer": "pwned"}
-      ]
-    },
-    {
-      "name": "IR Coordinator",
-      "description": "Document the incident timeline and coordinate case closure in TheHive.",
-      "tasks": [
-        {"question": "1. Summarise when containment was achieved based on team notes. Provide the HH:MM time.", "answer": "16:30"},
-        {"question": "2. Change the case status in TheHive to `Resolved`. What note do you add as the final summary?", "answer": "Incident handled"}
+      "id": "subcase-1d",
+      "title": "Subcaso 1d - Operación NG-SOC",
+      "phases": [
+        {
+          "name": "Monitorización y detección",
+          "activities": [
+            {
+              "step": 1,
+              "description": "NG-SIEM recopila telemetría del entorno CyberRangeCZ y genera una alerta priorizada.",
+              "tools": ["NG-SIEM"]
+            },
+            {
+              "step": 2,
+              "description": "El analista de NG-SOC valida la alerta y selecciona el playbook CACAO apropiado.",
+              "tools": ["Consola NG-SOC", "Repositorio de playbooks CACAO"]
+            }
+          ]
+        },
+        {
+          "name": "Orquestación del playbook",
+          "activities": [
+            {
+              "step": 3,
+              "description": "NG-SOC envía la orden de ejecución a NG-SOAR junto con los parámetros del incidente.",
+              "tools": ["NG-SOC Orchestrator", "NG-SOAR API"]
+            },
+            {
+              "step": 4,
+              "description": "NG-SOAR interpreta la secuencia CACAO y prepara las acciones automáticas y manuales requeridas.",
+              "tools": ["NG-SOAR Engine", "Modelo CACAO"]
+            }
+          ]
+        },
+        {
+          "name": "Ejecución automatizada",
+          "activities": [
+            {
+              "step": 5,
+              "description": "El playbook ejecuta tareas de enriquecimiento, contención y notificación sobre los activos afectados.",
+              "tools": ["NG-SOAR Connectors", "Integraciones de endpoint y red"]
+            },
+            {
+              "step": 6,
+              "description": "Se registran métricas de tiempo de respuesta y efectividad para su seguimiento posterior.",
+              "tools": ["NG-SOAR Metrics", "Dashboard NG-SOC"]
+            }
+          ]
+        },
+        {
+          "name": "Apoyo de sistemas transversales",
+          "activities": [
+            {
+              "step": 7,
+              "description": "BPMS coordina aprobaciones y tareas manuales pendientes vinculadas al incidente.",
+              "tools": ["BPMS"]
+            },
+            {
+              "step": 8,
+              "description": "CMDB ofrece contexto de activos críticos y dependencias para priorizar acciones.",
+              "tools": ["CMDB"]
+            },
+            {
+              "step": 9,
+              "description": "CTI-SS aporta inteligencia de amenazas para enriquecer indicadores y decidir contramedidas.",
+              "tools": ["CTI-SS"]
+            },
+            {
+              "step": 10,
+              "description": "KMS almacena procedimientos, lecciones aprendidas y evidencias de la ejecución del playbook.",
+              "tools": ["KMS"]
+            }
+          ]
+        },
+        {
+          "name": "Cierre y retroalimentación",
+          "activities": [
+            {
+              "step": 11,
+              "description": "NG-SOAR actualiza el estado del incidente en NG-SOC/NG-SIEM y consolida la documentación del caso.",
+              "tools": ["NG-SOAR", "Consola NG-SOC", "NG-SIEM"]
+            },
+            {
+              "step": 12,
+              "description": "BPMS cierra las tareas administrativas y KMS publica el conocimiento generado para futuros ejercicios.",
+              "tools": ["BPMS", "KMS"]
+            }
+          ]
+        }
       ]
     }
   ]

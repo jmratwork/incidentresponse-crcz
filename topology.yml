@@ -1,62 +1,77 @@
-name: incidentresponse_kypo
-hosts:
-  - name: attacker
-    base_box:
-      image: kali
-      mgmt_user: kali
-    flavor: standard.small
-  - name: soc-server
-    base_box:
-      image: ubuntu20-x86_64
-      mgmt_user: ubuntu
-    flavor: standard.medium
-  - name: user-pc
-    base_box:
-      image: windows10-x64
-      mgmt_user: IEUser
-      mgmt_protocol: winrm
-    flavor: standard.medium
-  - name: internal-server
-    base_box:
-      image: ubuntu20-x86_64
-      mgmt_user: ubuntu
-    flavor: standard.small
-routers:
-  - name: corp-router
-    base_box:
-      image: debian-11-x86_64
-      mgmt_user: debian
-    flavor: standard.small
-networks:
-  - name: user-zone
-    cidr: 10.10.10.0/24
-    accessible_by_user: False
-  - name: soc-zone
-    cidr: 10.10.20.0/24
-    accessible_by_user: False
-  - name: attacker-zone
-    cidr: 10.10.30.0/24
-    accessible_by_user: True
-net_mappings:
-  - host: user-pc
-    network: user-zone
-    ip: 10.10.10.50
-  - host: internal-server
-    network: user-zone
-    ip: 10.10.10.60
-  - host: soc-server
-    network: soc-zone
-    ip: 10.10.20.10
-  - host: attacker
-    network: attacker-zone
-    ip: 10.10.30.10
-router_mappings:
-  - router: corp-router
-    network: user-zone
-    ip: 10.10.10.1
-  - router: corp-router
-    network: soc-zone
-    ip: 10.10.20.1
-  - router: corp-router
-    network: attacker-zone
-    ip: 10.10.30.1
+name: cyberrangecz_core
+version: 1
+components:
+  instructor_console:
+    purpose: "Preparar y monitorizar las sesiones educativas del subcaso 1a."
+    integrations:
+      - random_education_platform
+      - reporting_workspace
+  random_education_platform:
+    purpose: "Gestionar el contenido teórico, cuestionarios y laboratorios prácticos para trainees."
+    modules:
+      - scheduler
+      - live_session
+      - quiz_engine
+      - practical_labs
+    integrations:
+      - instructor_console
+      - trainee_workstations
+      - reporting_workspace
+  trainee_workstations:
+    purpose: "Acceso de los/las trainees a los contenidos y laboratorios de CyberRangeCZ."
+    integrations:
+      - random_education_platform
+      - cyberrange_simulators
+  reporting_workspace:
+    purpose: "Consolidar métricas y resultados de cuestionarios/pruebas para el instructor."
+    integrations:
+      - random_education_platform
+      - instructor_console
+  cyberrange_simulators:
+    purpose: "Escenarios prácticos utilizados en los ejercicios del subcaso 1a."
+    integrations:
+      - random_education_platform
+
+  ng_soc:
+    purpose: "Centro de operaciones que coordina la respuesta del subcaso 1d."
+    integrations:
+      - ng_siem
+      - ng_soar
+      - bpms
+      - kms
+  ng_siem:
+    purpose: "Plataforma de correlación y priorización de eventos."
+    integrations:
+      - ng_soc
+      - cmdb
+      - cti_ss
+  ng_soar:
+    purpose: "Motor de ejecución de playbooks CACAO."
+    integrations:
+      - ng_soc
+      - bpms
+      - cmdb
+      - cti_ss
+      - kms
+  bpms:
+    purpose: "Orquestación de aprobaciones y tareas manuales dentro del flujo de respuesta."
+    integrations:
+      - ng_soc
+      - ng_soar
+      - kms
+  cmdb:
+    purpose: "Repositorio de activos y dependencias para contextualizar la respuesta."
+    integrations:
+      - ng_siem
+      - ng_soar
+  cti_ss:
+    purpose: "Servicio de inteligencia de amenazas que enriquece indicadores."
+    integrations:
+      - ng_siem
+      - ng_soar
+  kms:
+    purpose: "Gestión del conocimiento y lecciones aprendidas derivadas de los ejercicios."
+    integrations:
+      - ng_soc
+      - ng_soar
+      - bpms
