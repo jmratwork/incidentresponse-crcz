@@ -2,6 +2,8 @@
 
 Este documento reemplaza los scripts de despliegue tradicionales y describe cómo automatizar el ciclo de vida de los playbooks CACAO dentro de NG-SOAR, garantizando su sincronización con CICMS Operator, CTI-SS y la biblioteca de playbooks. Las automatizaciones se basan en API disponibles en los componentes del Subcaso 1d y pueden ejecutarse desde cualquier consola con acceso autenticado.
 
+> **Requisitos previos:** los ejemplos utilizan [HTTPie](https://httpie.io/) con las opciones `--check-status` y `--print=b` (`-b`) para asegurarse de que cualquier procesamiento posterior, como `jq`, opere exclusivamente sobre el cuerpo JSON devuelto por la API y para que los scripts fallen ante códigos HTTP no exitosos.
+
 ## 1. Creación de playbooks
 
 ```bash
@@ -10,17 +12,17 @@ Este documento reemplaza los scripts de despliegue tradicionales y describe cóm
 # Uso: ./crear_playbook.sh ruta/al/playbook.json
 set -euo pipefail
 PLAYBOOK_PATH="$1"
-TOKEN=$(http POST https://ng-soc.example/api/auth username=$SOC_USER password=$SOC_PASS | jq -r '.token')
+TOKEN=$(http --check-status --print=b POST https://ng-soc.example/api/auth username=$SOC_USER password=$SOC_PASS | jq -r '.token')
 
-http POST https://ng-soc.example/api/cacao/repository \
+http --check-status POST https://ng-soc.example/api/cacao/repository \
   "Authorization: Bearer $TOKEN" \
   < "$PLAYBOOK_PATH"
 
-http POST https://ng-soar.example/api/playbooks/import \
+http --check-status POST https://ng-soar.example/api/playbooks/import \
   "Authorization: Bearer $TOKEN" \
   < "$PLAYBOOK_PATH"
 
-http POST https://cicms.example/api/incidents/register-playbook \
+http --check-status POST https://cicms.example/api/incidents/register-playbook \
   "Authorization: Bearer $TOKEN" \
   playbook_path="$PLAYBOOK_PATH"
 ```
@@ -39,17 +41,17 @@ http POST https://cicms.example/api/incidents/register-playbook \
 set -euo pipefail
 PLAYBOOK_ID="$1"
 PLAYBOOK_PATH="$2"
-TOKEN=$(http POST https://ng-soc.example/api/auth username=$SOC_USER password=$SOC_PASS | jq -r '.token')
+TOKEN=$(http --check-status --print=b POST https://ng-soc.example/api/auth username=$SOC_USER password=$SOC_PASS | jq -r '.token')
 
-http PUT https://ng-soc.example/api/cacao/repository/$PLAYBOOK_ID \
+http --check-status PUT https://ng-soc.example/api/cacao/repository/$PLAYBOOK_ID \
   "Authorization: Bearer $TOKEN" \
   < "$PLAYBOOK_PATH"
 
-http PUT https://ng-soar.example/api/playbooks/$PLAYBOOK_ID \
+http --check-status PUT https://ng-soar.example/api/playbooks/$PLAYBOOK_ID \
   "Authorization: Bearer $TOKEN" \
   < "$PLAYBOOK_PATH"
 
-http POST https://playbooks.example/api/library/register \
+http --check-status POST https://playbooks.example/api/library/register \
   "Authorization: Bearer $TOKEN" \
   playbook_id="$PLAYBOOK_ID" \
   version="$(jq -r '.version' "$PLAYBOOK_PATH")" \
@@ -68,12 +70,12 @@ http POST https://playbooks.example/api/library/register \
 set -euo pipefail
 PLAYBOOK_ID="$1"
 CHANNEL="$2"
-TOKEN=$(http POST https://ng-soc.example/api/auth username=$SOC_USER password=$SOC_PASS | jq -r '.token')
+TOKEN=$(http --check-status --print=b POST https://ng-soc.example/api/auth username=$SOC_USER password=$SOC_PASS | jq -r '.token')
 
-PAYLOAD=$(http GET https://ng-soar.example/api/playbooks/$PLAYBOOK_ID \
+PAYLOAD=$(http --check-status --print=b GET https://ng-soar.example/api/playbooks/$PLAYBOOK_ID \
   "Authorization: Bearer $TOKEN")
 
-http POST https://cti-ss.example/api/cacao/share \
+http --check-status POST https://cti-ss.example/api/cacao/share \
   "Authorization: Bearer $TOKEN" \
   channel="$CHANNEL" \
   payload="$PAYLOAD"
