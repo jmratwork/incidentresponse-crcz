@@ -26,11 +26,11 @@ ansible-galaxy collection install ansible.windows community.general
 ## Running the playbook
 
 1. Export sensitive variables or prepare an Ansible Vault file that contains the required passwords.
-2. Copy `inventory.sample` to a working inventory file and adjust the host addresses if necessary.
+2. Copy `inventory.sample` to `inventory.ini` (or keep the `.sample` file) and adjust the host addresses if necessary.
 3. Execute the site playbook:
 
 ```bash
-ansible-playbook -i inventory.yml provisioning/subcase-1a/site.yml
+ansible-playbook -i inventory.ini provisioning/subcase-1a/site.yml
 ```
 
 ## Variables
