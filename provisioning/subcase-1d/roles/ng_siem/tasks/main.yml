@@ -1,0 +1,23 @@
+---
+- name: Install NG-SIEM packages
+  ansible.builtin.apt:
+    name: "{{ ng_siem_packages | default(['openjdk-17-jdk', 'rsyslog']) }}"
+    state: present
+    update_cache: true
+
+- name: Ensure rsyslog is enabled
+  ansible.builtin.service:
+    name: rsyslog
+    enabled: true
+    state: started
+
+- name: Deploy placeholder correlation profile
+  ansible.builtin.copy:
+    dest: /etc/ng-siem/correlation.conf
+    content: |
+      [default]
+      description = Sample correlation profile for CyberRangeCZ lab
+      enabled = true
+    owner: root
+    group: root
+    mode: '0644'

@@ -1,0 +1,25 @@
+---
+- name: Install instructor tooling
+  ansible.builtin.apt:
+    name: "{{ instructor_console_packages | default(['tmux', 'htop']) }}"
+    state: present
+    update_cache: true
+
+- name: Configure instructor notes workspace
+  ansible.builtin.file:
+    path: /home/ubuntu/rep-notes
+    state: directory
+    owner: ubuntu
+    group: ubuntu
+    mode: '0750'
+
+- name: Deploy welcome message
+  ansible.builtin.copy:
+    dest: /home/ubuntu/rep-notes/README.txt
+    content: |
+      Random Education Platform – Instructor Console
+      -----------------------------------------------
+      Use this folder to store agendas, collaborative links and post-session summaries.
+    owner: ubuntu
+    group: ubuntu
+    mode: '0640'

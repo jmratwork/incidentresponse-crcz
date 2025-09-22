@@ -1,0 +1,13 @@
+---
+- name: Ensure folders for trainee resources exist
+  ansible.windows.win_file:
+    path: "{{ item }}"
+    state: directory
+  loop: "{{ trainee_workspace_resources | default(['C:\\Labs', 'C:\\Labs\\Evidence']) }}"
+
+- name: Place orientation note for trainees
+  ansible.windows.win_copy:
+    dest: C:\Labs\WELCOME.txt
+    content: |
+      Welcome to the Random Education Platform phishing awareness lab.
+      Use the Evidence folder to store artefacts requested by the instructor.

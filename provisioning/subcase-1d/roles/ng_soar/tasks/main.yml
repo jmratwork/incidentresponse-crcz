@@ -1,0 +1,20 @@
+---
+- name: Install NG-SOAR packages
+  ansible.builtin.apt:
+    name: "{{ ng_soar_packages | default(['python3-venv', 'redis-server']) }}"
+    state: present
+    update_cache: true
+
+- name: Ensure redis is running
+  ansible.builtin.service:
+    name: redis-server
+    enabled: true
+    state: started
+
+- name: Create CACAO playbook directory
+  ansible.builtin.file:
+    path: /opt/ng-soar/playbooks
+    state: directory
+    owner: ubuntu
+    group: ubuntu
+    mode: '0755'
