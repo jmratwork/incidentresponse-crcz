@@ -1,21 +1,23 @@
-[attacker]
-attacker ansible_host=10.10.30.10 ansible_user=kali ansible_password=kali
+[random_education_platform]
+rep ansible_host=10.10.10.20 ansible_user=admin ansible_password=repAdmin
 
-[soc_server]
-soc-server ansible_host=10.10.20.10 ansible_user=ubuntu ansible_password=ubuntu
+[ng_soc]
+ng-soc ansible_host=10.10.20.10 ansible_user=socops ansible_password=SocOps2024!
 
-[user_pc]
-user-pc ansible_host=10.10.10.50 ansible_user=IEUser ansible_password=Passw0rd!
+[ng_siem]
+ng-siem ansible_host=10.10.20.11 ansible_user=siemsvc ansible_password=SiemSvc2024!
 
-[user_pc:vars]
-ansible_connection=winrm
-ansible_port=5985
-ansible_winrm_scheme=http
-ansible_winrm_transport=basic
-ansible_winrm_server_cert_validation=ignore
+[ng_soar]
+ng-soar ansible_host=10.10.20.12 ansible_user=soarops ansible_password=SoarOps2024!
 
-[internal_server]
-internal-server ansible_host=10.10.10.60 ansible_user=ubuntu ansible_password=ubuntu
+[bpms]
+bpms ansible_host=10.10.30.10 ansible_user=bpmsvc ansible_password=BpmsSvc2024!
 
-[corp_router]
-corp-router ansible_host=10.10.10.1 ansible_user=debian ansible_password=debian
+[cmdb]
+cmdb ansible_host=10.10.30.11 ansible_user=cmdbsvc ansible_password=CmdbSvc2024!
+
+[cti_ss]
+cti-ss ansible_host=10.10.30.12 ansible_user=ctisvc ansible_password=CtiSvc2024!
+
+[kms]
+kms ansible_host=10.10.40.10 ansible_user=kmsvc ansible_password=KmSvc2024!
