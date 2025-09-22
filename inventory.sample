@@ -1,32 +1,34 @@
+# NOTE: Store real credentials in Ansible Vault or environment variables before running playbooks.
+
 [random_education_platform]
-rep ansible_host=10.10.10.20 ansible_user=admin ansible_password=repAdmin
+rep ansible_host=10.10.10.20 ansible_user=admin ansible_password="<set via Ansible Vault or env var>"
 
 [instructor_console]
-instructor-console ansible_host=CHANGEME ansible_user=CHANGEME ansible_password=CHANGEME
+instructor-console ansible_host=CHANGEME ansible_user=CHANGEME ansible_password="<set via Ansible Vault or env var>"
 
 [trainee_workstations]
-trainee-workstations ansible_host=CHANGEME ansible_user=CHANGEME ansible_password=CHANGEME
+trainee-workstations ansible_host=CHANGEME ansible_user=CHANGEME ansible_password="<set via Ansible Vault or env var>"
 
 [reporting_workspace]
-reporting-workspace ansible_host=CHANGEME ansible_user=CHANGEME ansible_password=CHANGEME
+reporting-workspace ansible_host=CHANGEME ansible_user=CHANGEME ansible_password="<set via Ansible Vault or env var>"
 
 [cyberrange_simulators]
-cyberrange-simulators ansible_host=CHANGEME ansible_user=CHANGEME ansible_password=CHANGEME
+cyberrange-simulators ansible_host=CHANGEME ansible_user=CHANGEME ansible_password="<set via Ansible Vault or env var>"
 
 [ng_soc]
-ng-soc ansible_host=10.10.20.10 ansible_user=socops ansible_password=SocOps2024!
+ng-soc ansible_host=10.10.20.10 ansible_user=socops ansible_password="<set via Ansible Vault or env var>"
 
 [ng_siem]
-ng-siem ansible_host=10.10.20.11 ansible_user=siemsvc ansible_password=SiemSvc2024!
+ng-siem ansible_host=10.10.20.11 ansible_user=siemsvc ansible_password="<set via Ansible Vault or env var>"
 
 [ng_soar]
-ng-soar ansible_host=10.10.20.12 ansible_user=soarops ansible_password=SoarOps2024!
+ng-soar ansible_host=10.10.20.12 ansible_user=soarops ansible_password="<set via Ansible Vault or env var>"
 
 [cti_ss]
-cti-ss ansible_host=10.10.30.12 ansible_user=ctisvc ansible_password=CtiSvc2024!
+cti-ss ansible_host=10.10.30.12 ansible_user=ctisvc ansible_password="<set via Ansible Vault or env var>"
 
 [cicms_operator]
-cicms-operator ansible_host=CHANGEME ansible_user=CHANGEME ansible_password=CHANGEME
+cicms-operator ansible_host=CHANGEME ansible_user=CHANGEME ansible_password="<set via Ansible Vault or env var>"
 
 [playbook_library]
-playbook-library ansible_host=CHANGEME ansible_user=CHANGEME ansible_password=CHANGEME
+playbook-library ansible_host=CHANGEME ansible_user=CHANGEME ansible_password="<set via Ansible Vault or env var>"

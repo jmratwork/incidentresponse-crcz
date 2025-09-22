@@ -45,6 +45,11 @@ The detailed flow for each subcase is summarised below to facilitate reproductio
 - `training_linear.json`: lists the learning modules for subcases 1a and 1d, including step-by-step activities and the tools involved.
 - `topology.yml`: describes the CyberRangeCZ components relevant to the exercises and how they integrate with the educational and operational tooling.
 - `docs/`: support materials and complementary guides.
+- `inventory.sample`: template inventory with placeholder credentials; load secrets at runtime via Ansible Vault or environment variables instead of committing them to version control.
+
+## Credential management
+
+Before executing Ansible playbooks, replace the password placeholders in `inventory.sample` by referencing secrets stored in Ansible Vault files or exported through environment variables. This keeps sensitive credentials out of the repository while preserving a working inventory template for the exercises.
 
 ## Licence
 
