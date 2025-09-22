@@ -48,4 +48,4 @@ The detailed flow for each subcase is summarised below to facilitate reproductio
 
 ## Licence
 
-The content is provided strictly for educational purposes within the CyberRangeCZ framework.
+The content is provided strictly for educational purposes.
