@@ -33,13 +33,34 @@ ansible-galaxy collection install ansible.windows community.general
 ansible-playbook -i inventory.ini provisioning/subcase-1a/site.yml
 ```
 
-## Variables
+## Role functional requirements
 
-The roles expect the following optional variables that can be set in inventory or extra vars:
+### `rep_core`
+- **Servicio**: publica la plataforma REP detrás de Nginx con equilibrio hacia los microservicios de `scheduler`, `live_session` y `quiz_engine`.
+- **Configuración**: el archivo `templates/nginx-rep-core.conf.j2` genera el *virtual host* TLS y los *upstreams* definidos en `defaults/main.yml` (`rep_core_virtual_host` y `rep_core_tls`). También se protege un secreto compartido en `rep_core_shared_secret_file`.
+- **Variables clave**: `rep_core_virtual_host.*`, `rep_core_tls.*`, `rep_core_shared_secret` y `rep_core_healthcheck` describen rutas, certificados y comprobaciones de salud.
+- **Validación**: `tasks/main.yml` ejecuta `nginx -t` y una llamada `ansible.builtin.uri` al `healthcheck_path`, marcando error si el código HTTP difiere del esperado.
 
-- `rep_core_packages`: list of additional packages for the REP backend servers (defaults to `['nginx', 'python3-venv']`).
-- `reporting_workspace_packages`: analytics tooling to install (defaults to `['postgresql', 'grafana']`).
-- `instructor_console_packages`: productivity tooling for the instructor (defaults to `['tmux', 'htop']`).
-- `trainee_workspace_resources`: folders created on Windows workstations (defaults to `['C:\\Labs', 'C:\\Labs\\Evidence']`).
+### `reporting_workspace`
+- **Servicio**: aprovisiona Grafana con *datasources* PostgreSQL y paneles para supervisar el ejercicio.
+- **Configuración**: las plantillas `grafana.ini.j2`, `datasources.yaml.j2`, `dashboards.yaml.j2` y `dashboard.json.j2` generan la configuración de Grafana y los paneles listados en `reporting_workspace_dashboards`.
+- **Variables clave**: `reporting_workspace_datasources`, `reporting_workspace_dashboards`, `reporting_workspace_grafana_ini` y `reporting_workspace_healthcheck` permiten parametrizar puertos, paneles y pruebas.
+- **Validación**: tras desplegar las plantillas se consulta `GET {{ reporting_workspace_healthcheck.url }}` esperando un `database == 'ok'`.
 
-Override them by passing `-e` or defining group variables as required by the exercise scenario.
+### `instructor_console`
+- **Servicio**: prepara el terminal de la persona instructora con sesiones `tmux` predefinidas y atajos shell a los servicios críticos.
+- **Configuración**: `tmux.conf.j2` y `instructor-console.sh.j2` traducen `instructor_console_tmux_settings` y `instructor_console_shortcuts` en archivos en `$HOME` y `/etc/profile.d`.
+- **Variables clave**: `instructor_console_user`, `instructor_console_workspace`, `instructor_console_tmux_settings` y `instructor_console_shortcuts`.
+- **Validación**: se ejecuta `tmux -f … display-message` y un `bash -lc` que verifica que los *shortcuts* queden definidos como funciones.
+
+### `trainee_workstation`
+- **Servicio**: distribuye la configuración del agente REP Collector y los accesos directos en los escritorios Windows de los participantes.
+- **Configuración**: mediante `ansible.windows.win_template` se generan `collector.yaml` y los accesos `.url` descritos en `trainee_workstation_shortcuts`.
+- **Variables clave**: `trainee_workstation_collector.*` (ruta, servicio y transportes) y `trainee_workstation_shortcuts`.
+- **Validación**: se comprueba el servicio con `Get-Service` y se reinicia automáticamente si cambian las plantillas.
+
+## Parametrización y comprobaciones
+
+Cada rol expone su configuración predeterminada en `roles/<rol>/defaults/main.yml`. Ajuste esas variables en inventario, `group_vars` o parámetros `-e` para personalizar hosts, certificados, destinos de ingesta o accesos directos sin modificar las plantillas.
+
+El archivo `tasks/main.yml` de cada rol aplica la configuración de forma idempotente mediante `ansible.builtin.template`/`ansible.windows.win_template` y registra *handlers* para reiniciar servicios cuando sea necesario. Las últimas tareas incorporan verificaciones post-configuración (comprobaciones HTTP, comandos `nginx -t`, `tmux`, `Get-Service`, etc.) con condiciones `failed_when` que detienen la ejecución si los servicios no responden como se espera.

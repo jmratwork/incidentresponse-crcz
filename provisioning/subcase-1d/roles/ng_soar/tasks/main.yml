@@ -1,20 +1,33 @@
 ---
-- name: Install NG-SOAR packages
-  ansible.builtin.apt:
-    name: "{{ ng_soar_packages | default(['python3-venv', 'redis-server']) }}"
-    state: present
-    update_cache: true
-
-- name: Ensure redis is running
-  ansible.builtin.service:
-    name: redis-server
-    enabled: true
-    state: started
-
-- name: Create CACAO playbook directory
+- name: Ensure ng-soar configuration directory exists
   ansible.builtin.file:
-    path: /opt/ng-soar/playbooks
+    path: "{{ ng_soar_queue_config | dirname }}"
     state: directory
-    owner: ubuntu
-    group: ubuntu
-    mode: '0755'
+    owner: root
+    group: ng-soar
+    mode: "0750"
+
+- name: Deploy ng-soar queue definitions
+  ansible.builtin.template:
+    src: queues.yaml.j2
+    dest: "{{ ng_soar_queue_config }}"
+    owner: root
+    group: ng-soar
+    mode: "0640"
+  notify: restart ng-soar
+  no_log: true
+
+- name: Validate ng-soar queues
+  ansible.builtin.command: "ng-soarctl validate --config {{ ng_soar_queue_config }}"
+  register: ng_soar_validation
+  changed_when: false
+  failed_when: ng_soar_validation.rc != 0
+
+- name: Check ng-soar API health
+  ansible.builtin.uri:
+    url: "{{ ng_soar_healthcheck.url }}"
+    method: GET
+    status_code: {{ ng_soar_healthcheck.status_code | int }}
+  register: ng_soar_health
+  failed_when: ng_soar_health.status != ng_soar_healthcheck.status_code
+  changed_when: false

@@ -19,6 +19,5 @@
 
 - name: Stage trainee lab resources
   hosts: trainees
-  gather_facts: false
   roles:
     - role: trainee_workstation

@@ -1,0 +1,7 @@
+# Instructor console shortcuts
+{% for shortcut in instructor_console_shortcuts %}
+{{ shortcut.name | upper }}() {
+    {{ shortcut.command }}
+}
+export -f {{ shortcut.name | upper }}
+{% endfor %}
