@@ -78,10 +78,11 @@ PAYLOAD=$(http --check-status --print=b GET https://ng-soar.example/api/playbook
 http --check-status POST https://cti-ss.example/api/cacao/share \
   "Authorization: Bearer $TOKEN" \
   channel="$CHANNEL" \
-  payload="$PAYLOAD"
+  payload:="$PAYLOAD"
 ```
 
 - NG-SOAR exposes the playbook in CACAO format and CTI-SS replicates it to the targeted intelligence channels.
+- Nota: el uso de `:=` en HTTPie evita re-escapar el JSON y lo reenvía íntegro a CTI-SS.
 - CTI-SS adds tags and taxonomies before redistributing the content.
 - The process is logged in CICMS Operator and in the library to maintain traceability.
 
