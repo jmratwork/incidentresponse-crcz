@@ -1,0 +1,33 @@
+name: Ansible Validation
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    container:
+      image: ubuntu:22.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          apt-get update
+          apt-get install -y python3 python3-pip
+          pip install --upgrade ansible ansible-lint yamllint
+
+      - name: Run yamllint
+        run: |
+          yamllint provisioning/
+
+      - name: Run ansible-lint
+        run: |
+          ansible-lint provisioning/subcase-1a/site.yml provisioning/subcase-1d/site.yml
+
+      - name: Run ansible-playbook syntax check
+        run: |
+          ansible-playbook --syntax-check provisioning/subcase-1a/site.yml
+          ansible-playbook --syntax-check provisioning/subcase-1d/site.yml
