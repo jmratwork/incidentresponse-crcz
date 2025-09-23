@@ -1,0 +1,30 @@
+server:
+  host: {{ cti_ss_bind_host }}
+  port: {{ cti_ss_bind_port }}
+  log_level: INFO
+
+collections:
+{% for collection in cti_ss_taxii_collections %}
+  - id: {{ collection.id }}
+    title: {{ collection.title }}
+    description: {{ collection.description }}
+    can_read:
+{% for reader in collection.can_read %}
+      - {{ reader }}
+{% endfor %}
+    can_write:
+{% for writer in collection.can_write %}
+      - {{ writer }}
+{% endfor %}
+{% endfor %}
+
+authentication:
+  users:
+{% for user in cti_ss_auth.users %}
+    - username: {{ user.username }}
+      password: {{ user.password }}
+      permissions:
+{% for permission in user.permissions %}
+        - {{ permission }}
+{% endfor %}
+{% endfor %}
