@@ -32,9 +32,11 @@ export ANSIBLE_PASSWORD_NG_SOC='********'
 
 ```bash
 python3 -m pip install --upgrade ansible
+python3 -m pip install pywinrm
 ansible-galaxy collection install ansible.windows community.general
 ```
 
+- Install `pywinrm` to enable Ansible WinRM connectivity. Use `python3 -m pip install "pywinrm[credssp]"` when the sandbox requires CredSSP delegation support.
 - Windows connectivity for trainee machines requires WinRM over TLS (port 5986). Configure certificates or use the inventory option `ansible_winrm_server_cert_validation=ignore` for lab environments.
 
 ## 4. Execute the playbooks
