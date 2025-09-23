@@ -2,7 +2,11 @@
 
 This document replaces traditional deployment scripts and explains how to automate the lifecycle of CACAO playbooks within NG-SOAR, ensuring synchronisation with CICMS Operator, CTI-SS and the playbook library. The automations rely on APIs available in the Subcase 1d components and can be run from any console with authenticated access.
 
-> **Prerequisites:** the examples use [HTTPie](https://httpie.io/) with the `--check-status` and `--print=b` (`-b`) options to ensure that any post-processing, such as `jq`, operates solely on the JSON body returned by the API and so that scripts fail on unsuccessful HTTP codes.
+> **Prerequisites:** the examples use [HTTPie](https://httpie.io/) with the `--check-status` and `--print=b` (`-b`) options to ensure that any post-processing, such as [`jq`](https://stedolan.github.io/jq/), operates solely on the JSON body returned by the API and so that scripts fail on unsuccessful HTTP codes.
+> - On Debian/Ubuntu, install both tools with `sudo apt-get install httpie jq`.
+> - On macOS with Homebrew, install them with `brew install httpie jq`.
+
+Both HTTPie and `jq` are required to execute `crear_playbook.sh`, `actualizar_playbook.sh` and `compartir_playbook.sh`.
 
 ## 1. Playbook creation
 
