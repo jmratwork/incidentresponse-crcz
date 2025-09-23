@@ -13,7 +13,7 @@ The playbooks in this directory prepare the infrastructure required by the phish
 
 ## Requirements
 
-- Ansible 2.15 or newer with the `ansible.windows` and `community.general` collections installed.
+- Ansible 2.15 or newer with the `ansible.windows` and `community.general` collections installed, plus the `pywinrm` Python package for WinRM connectivity (use `pywinrm[credssp]` when the scenario requires CredSSP).
 - Network reachability towards the hosts defined in `provisioning/subcase-1a-topology.yml`.
 - Credentials provided through Ansible Vault files or environment variables (see `inventory.sample`).
 
