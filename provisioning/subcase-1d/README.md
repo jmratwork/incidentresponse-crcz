@@ -37,42 +37,42 @@ Use tags to execute individual components, e.g. `--tags ng_siem` to provision on
 ## Role functional requirements
 
 ### `cicms`
-- **Servicio**: expone el portal de coordinación de incidentes con Nginx y enruta hacia el backend en `:9201`.
-- **Configuración**: `nginx-cicms.conf.j2` y `settings.json.j2` convierten las variables `cicms_nginx_site`, `cicms_tls` y `cicms_cms_settings` en la configuración real y secretos TLS.
-- **Validación**: `nginx -t` y una solicitud `GET {{ cicms_healthcheck.url }}` aseguran que el *virtual host* responda.
+- **Service:** exposes the incident coordination portal with Nginx and routes traffic to the backend on `:9201`.
+- **Configuration:** `nginx-cicms.conf.j2` and `settings.json.j2` render the `cicms_nginx_site`, `cicms_tls` and `cicms_cms_settings` variables into the effective configuration and TLS secrets.
+- **Validation:** `nginx -t` and a `GET {{ cicms_healthcheck.url }}` request ensure the virtual host responds correctly.
 
 ### `cti_ss`
-- **Servicio**: publica un servidor TAXII con colecciones STIX utilizadas por NG-SIEM y NG-SOAR.
-- **Configuración**: `taxii.yaml.j2` toma `cti_ss_taxii_collections`, credenciales y puertos para generar `/etc/cti-ss/taxii.yaml`.
-- **Validación**: `cti-ssctl configtest` y `cti_ss_healthcheck_command` comprueban sintaxis y estado del daemon.
+- **Service:** publishes a TAXII server with STIX collections used by NG-SIEM and NG-SOAR.
+- **Configuration:** `taxii.yaml.j2` consumes `cti_ss_taxii_collections`, credentials and ports to generate `/etc/cti-ss/taxii.yaml`.
+- **Validation:** `cti-ssctl configtest` and `cti_ss_healthcheck_command` verify the daemon syntax and status.
 
 ### `ng_siem`
-- **Servicio**: mantiene el *pipeline* `rep_ingest` con fuentes TCP y TAXII, enriquecimientos GeoIP y salida a Elasticsearch.
-- **Configuración**: `pipeline.conf.j2` traduce `ng_siem_pipeline` en el archivo de `pipelines.d`.
-- **Validación**: se ejecuta `ng-siemctl pipeline lint` seguido de `ng_siem_healthcheck.command` para verificar que la canalización esté saludable.
+- **Service:** maintains the `rep_ingest` pipeline with TCP and TAXII sources, GeoIP enrichments and an Elasticsearch output.
+- **Configuration:** `pipeline.conf.j2` translates `ng_siem_pipeline` into the file under `pipelines.d`.
+- **Validation:** the role runs `ng-siemctl pipeline lint` followed by `ng_siem_healthcheck.command` to confirm the pipeline is healthy.
 
 ### `ng_soar`
-- **Servicio**: define colas de orquestación y conectores (REST/Kafka) para la automatización NG-SOAR.
-- **Configuración**: `queues.yaml.j2` usa `ng_soar_queues` y `ng_soar_integrations` para publicar la topología de colas.
-- **Validación**: `ng-soarctl validate` y una comprobación HTTP `{{ ng_soar_healthcheck.url }}`.
+- **Service:** defines orchestration queues and connectors (REST/Kafka) for NG-SOAR automation.
+- **Configuration:** `queues.yaml.j2` uses `ng_soar_queues` and `ng_soar_integrations` to publish the queue topology.
+- **Validation:** `ng-soarctl validate` plus an HTTP check to `{{ ng_soar_healthcheck.url }}`.
 
 ### `ng_soc`
-- **Servicio**: entrega el tablero del SOC con widgets conectados a NG-SIEM/NG-SOAR y rutas de alerta.
-- **Configuración**: `dashboard.yaml.j2` consume `ng_soc_widgets` y `ng_soc_alert_routes` para construir `/etc/ng-soc/dashboard.yaml`.
-- **Validación**: `ng-socctl validate` y `ansible.builtin.uri` contra `ng_soc_healthcheck.url`.
+- **Service:** delivers the SOC dashboard with widgets connected to NG-SIEM/NG-SOAR and alert routes.
+- **Configuration:** `dashboard.yaml.j2` consumes `ng_soc_widgets` and `ng_soc_alert_routes` to build `/etc/ng-soc/dashboard.yaml`.
+- **Validation:** `ng-socctl validate` and an `ansible.builtin.uri` check against `ng_soc_healthcheck.url`.
 
 ### `playbook_library`
-- **Servicio**: aloja los playbooks CACAO consumidos por NG-SOAR.
-- **Configuración**: las plantillas `playbook.json.j2` e `index.json.j2` serializan `playbook_library_playbooks` en archivos individuales y un índice general.
-- **Validación**: `playbook_library_healthcheck_command` (por defecto `cacaoctl validate`).
+- **Service:** hosts the CACAO playbooks consumed by NG-SOAR.
+- **Configuration:** the `playbook.json.j2` and `index.json.j2` templates serialise `playbook_library_playbooks` into individual files and a global index.
+- **Validation:** `playbook_library_healthcheck_command` (defaults to `cacaoctl validate`).
 
 ### `telemetry_feeder`
-- **Servicio**: distribuye el agente que envía telemetría y observables a NG-SIEM y CTI-SS.
-- **Configuración**: `agent.yaml.j2` refleja `telemetry_feeder_agent` con *buffers*, transformaciones y salidas.
-- **Validación**: `telemetry-feederctl lint` más una consulta HTTP contra `telemetry_feeder_healthcheck_url`.
+- **Service:** distributes the agent that forwards telemetry and observables to NG-SIEM and CTI-SS.
+- **Configuration:** `agent.yaml.j2` reflects `telemetry_feeder_agent` with buffers, transformations and outputs.
+- **Validation:** `telemetry-feederctl lint` plus an HTTP query to `telemetry_feeder_healthcheck_url`.
 
-## Parametrización y comprobaciones
+## Parameterisation and checks
 
-Las variables predeterminadas viven en `roles/<rol>/defaults/main.yml` y cubren puertos, rutas de plantillas, parámetros CACAO y credenciales de ingesta. Ajuste esos valores en `group_vars`, inventario o `--extra-vars` para adaptar pipelines, colas y colecciones a cada laboratorio.
+The default variables live in `roles/<role>/defaults/main.yml` and cover ports, template paths, CACAO parameters and ingestion credentials. Adjust those values in `group_vars`, the inventory or `--extra-vars` to adapt pipelines, queues and collections to each lab.
 
-Cada `tasks/main.yml` aplica las plantillas con módulos idempotentes (`ansible.builtin.template`, `ansible.builtin.copy`) y activa *handlers* para reinicios controlados. Los pasos finales incluyen validaciones de línea de comandos o `ansible.builtin.uri` con `failed_when` explícitos, de modo que cualquier fallo en la conectividad, sintaxis o estado del servicio detiene el despliegue y proporciona trazabilidad inmediata.
+Each `tasks/main.yml` applies the templates with idempotent modules (`ansible.builtin.template`, `ansible.builtin.copy`) and triggers handlers for controlled restarts. The final steps include command-line or `ansible.builtin.uri` validations with explicit `failed_when` clauses so any connectivity, syntax or service-status issue stops the deployment and provides immediate traceability.
