@@ -1,0 +1,33 @@
+---
+- name: Validate subcase 1d services
+  hosts: all
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Check nginx configuration syntax
+      ansible.builtin.command: nginx -t
+      register: nginx_test
+      changed_when: false
+
+    - name: Confirm redis service is active
+      ansible.builtin.command: systemctl is-active redis-server.service
+      register: redis_status
+      changed_when: false
+      failed_when: redis_status.stdout.strip() != 'active'
+
+    - name: Validate telemetry feeder configuration command
+      ansible.builtin.command: telemetry-feederctl lint --config /etc/telemetry-feeder/agent.yaml
+      register: telemetry_lint
+      changed_when: false
+
+    - name: Ensure telemetry simulator script is present
+      ansible.builtin.stat:
+        path: /opt/telemetry-simulator/scenarios/generate.sh
+      register: telemetry_script
+
+    - name: Assert telemetry simulator script exists
+      ansible.builtin.assert:
+        that:
+          - telemetry_script.stat.exists
+          - telemetry_script.stat.mode is match('.*755')
+        fail_msg: "Telemetry simulator script missing"

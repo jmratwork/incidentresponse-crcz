@@ -15,3 +15,7 @@ These files can be imported into KYPO to instantiate the virtual machines, route
 - `subcase-1d/` – Roles and site playbook to configure NG-SOC automation components, intelligence services and the telemetry generator.
 
 Each subdirectory includes a README with prerequisites, variable references and execution instructions. Install the required Ansible collections before running the playbooks and store credentials using Ansible Vault or environment variables instead of plain text files.
+
+## Molecule scenarios
+
+Both subcases expose Molecule scenarios under `provisioning/subcase-1a/molecule/` and `provisioning/subcase-1d/molecule/`. Each scenario provisions a Docker container with mocked services, applies the corresponding `site.yml` and runs the same health checks outlined in the provisioning guide. Run `molecule test` from the subcase directory to validate changes locally.

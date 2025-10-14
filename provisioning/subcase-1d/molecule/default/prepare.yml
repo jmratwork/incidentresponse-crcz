@@ -1,0 +1,216 @@
+---
+- name: Prepare Molecule instance for subcase 1d
+  hosts: all
+  become: true
+  tasks:
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: 3600
+
+    - name: Install base packages
+      ansible.builtin.apt:
+        name:
+          - curl
+          - nginx
+          - python3
+          - python3-venv
+          - redis-server
+        state: present
+
+    - name: Ensure service groups exist
+      ansible.builtin.group:
+        name: "{{ item }}"
+      loop:
+        - ng-soc
+        - ng-siem
+        - ng-soar
+        - cacao
+        - telemetry
+
+    - name: Ensure CACAO service user exists
+      ansible.builtin.user:
+        name: cacao
+        group: cacao
+        create_home: false
+        shell: /usr/sbin/nologin
+
+    - name: Create shared directories
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        owner: root
+        group: root
+        mode: "0755"
+      loop:
+        - /etc/nginx/tls
+        - /opt/telemetry-simulator/scenarios
+
+    - name: Generate CICMS self-signed certificate
+      ansible.builtin.command:
+        cmd: >-
+          openssl req -x509 -nodes -days 365 -subj "/CN=cicms.internal"
+          -newkey rsa:2048 -keyout /etc/nginx/tls/cicms.key
+          -out /etc/nginx/tls/cicms.crt
+      args:
+        creates: /etc/nginx/tls/cicms.crt
+
+    - name: Create telemetry simulator script
+      ansible.builtin.copy:
+        dest: /opt/telemetry-simulator/scenarios/generate.sh
+        mode: "0755"
+        content: |
+          #!/usr/bin/env bash
+          echo "Simulating telemetry feed"
+
+    - name: Install mock HTTP service helper
+      ansible.builtin.copy:
+        dest: /usr/local/bin/mock_http_service.py
+        mode: "0755"
+        content: |
+          #!/usr/bin/env python3
+          import argparse
+          import json
+          from http.server import BaseHTTPRequestHandler, HTTPServer
+
+          class Handler(BaseHTTPRequestHandler):
+              def do_GET(self):
+                  self.send_response(200)
+                  self.send_header("Content-Type", "application/json")
+                  self.end_headers()
+                  self.wfile.write(self.server.payload)
+
+              def log_message(self, *args, **kwargs):
+                  return
+
+          def main():
+              parser = argparse.ArgumentParser()
+              parser.add_argument("--port", type=int, required=True)
+              parser.add_argument("--payload", default="{}")
+              args = parser.parse_args()
+              payload = json.dumps(json.loads(args.payload)).encode()
+              server = HTTPServer(("0.0.0.0", args.port), Handler)
+              server.payload = payload
+              server.serve_forever()
+
+          if __name__ == "__main__":
+              main()
+
+    - name: Configure mock HTTP services
+      ansible.builtin.copy:
+        dest: "/etc/systemd/system/{{ item.name }}.service"
+        mode: "0644"
+        content: |
+          [Unit]
+          Description={{ item.description }}
+          After=network.target
+
+          [Service]
+          ExecStart=/usr/bin/python3 /usr/local/bin/mock_http_service.py --port {{ item.port }} --payload '{{ item.payload }}'
+          Restart=always
+
+          [Install]
+          WantedBy=multi-user.target
+      loop:
+        - { name: ng-soc-api, description: "Mock NG-SOC API", port: 5601, payload: '{"status": "green"}' }
+        - { name: ng-soar-api, description: "Mock NG-SOAR API", port: 8080, payload: '{"status": "ok"}' }
+        - { name: telemetry-feeder-health, description: "Mock telemetry feeder health", port: 9200, payload: '{"status": "ok"}' }
+        - { name: cicms-backend, description: "Mock CICMS backend", port: 5100, payload: '{"status": "ok"}' }
+
+    - name: Install command stubs for NG stack
+      ansible.builtin.copy:
+        dest: "/usr/local/bin/{{ item.name }}"
+        mode: "0755"
+        content: "{{ item.content }}"
+      loop:
+        - name: ng-socctl
+          content: |
+            #!/usr/bin/env bash
+            if [[ "$1" == "validate" ]]; then
+              echo "dashboard valid"
+              exit 0
+            fi
+            echo "ng-socctl mock"
+        - name: ng-siemctl
+          content: |
+            #!/usr/bin/env bash
+            if [[ "$1" == "pipeline" && "$2" == "lint" ]]; then
+              echo "pipeline lint ok"
+              exit 0
+            fi
+            if [[ "$1" == "pipeline" && "$2" == "status" ]]; then
+              echo "rep_ingest healthy"
+              exit 0
+            fi
+            echo "ng-siemctl mock"
+        - name: ng-soarctl
+          content: |
+            #!/usr/bin/env bash
+            if [[ "$1" == "validate" ]]; then
+              echo "queues valid"
+              exit 0
+            fi
+            echo "ng-soarctl mock"
+        - name: cti-ssctl
+          content: |
+            #!/usr/bin/env bash
+            if [[ "$1" == "configtest" ]]; then
+              echo "configuration ok"
+              exit 0
+            fi
+            if [[ "$1" == "status" ]]; then
+              echo "service running"
+              exit 0
+            fi
+            echo "cti-ssctl mock"
+        - name: cacaoctl
+          content: |
+            #!/usr/bin/env bash
+            if [[ "$1" == "validate" ]]; then
+              echo "library valid"
+              exit 0
+            fi
+            echo "cacaoctl mock"
+        - name: telemetry-feederctl
+          content: |
+            #!/usr/bin/env bash
+            if [[ "$1" == "lint" ]]; then
+              echo "telemetry config ok"
+              exit 0
+            fi
+            echo "telemetry-feederctl mock"
+
+    - name: Ensure stub commands are discoverable
+      ansible.builtin.file:
+        path: "/usr/bin/{{ item }}"
+        state: link
+        src: "/usr/local/bin/{{ item }}"
+        force: true
+      loop:
+        - ng-socctl
+        - ng-siemctl
+        - ng-soarctl
+        - cti-ssctl
+        - cacaoctl
+        - telemetry-feederctl
+
+    - name: Reload systemd and enable mock services
+      ansible.builtin.systemd:
+        daemon_reload: true
+        name: "{{ item }}"
+        state: started
+        enabled: true
+      loop:
+        - ng-soc-api.service
+        - ng-soar-api.service
+        - telemetry-feeder-health.service
+        - cicms-backend.service
+
+    - name: Ensure nginx and redis services are running
+      ansible.builtin.systemd:
+        name: "{{ item }}"
+        state: started
+        enabled: true
+      loop:
+        - nginx
+        - redis-server

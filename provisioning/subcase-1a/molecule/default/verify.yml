@@ -1,0 +1,27 @@
+---
+- name: Validate subcase 1a services
+  hosts: all
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Run nginx syntax check
+      ansible.builtin.command: nginx -t
+      register: nginx_test
+      changed_when: false
+
+    - name: Confirm Grafana API is active
+      ansible.builtin.command: systemctl is-active grafana-server.service
+      register: grafana_service
+      changed_when: false
+      failed_when: grafana_service.stdout.strip() != 'active'
+
+    - name: Query Grafana health endpoint
+      ansible.builtin.command: curl -s http://127.0.0.1:3000/api/health
+      register: grafana_health
+      changed_when: false
+      failed_when: '"database": "ok"' not in grafana_health.stdout
+
+    - name: Confirm tmux configuration renders
+      ansible.builtin.command: tmux -f /home/instructor/.tmux.conf display-message
+      register: tmux_check
+      changed_when: false

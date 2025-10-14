@@ -1,0 +1,138 @@
+---
+- name: Prepare Molecule instance for subcase 1a
+  hosts: all
+  become: true
+  tasks:
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: 3600
+
+    - name: Install base packages
+      ansible.builtin.apt:
+        name:
+          - curl
+          - nginx
+          - python3
+          - python3-venv
+          - tmux
+        state: present
+
+    - name: Ensure service groups exist
+      ansible.builtin.group:
+        name: "{{ item }}"
+      loop:
+        - rep
+        - grafana
+        - instructor
+
+    - name: Ensure service accounts exist
+      ansible.builtin.user:
+        name: "{{ item.name }}"
+        group: "{{ item.group }}"
+        create_home: "{{ item.create_home | default(false) }}"
+        shell: /bin/bash
+      loop:
+        - { name: grafana, group: grafana }
+        - { name: instructor, group: instructor, create_home: true }
+
+    - name: Create shared directories
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        owner: root
+        group: root
+        mode: "0755"
+      loop:
+        - /etc/nginx/tls
+        - /srv/rep/current
+
+    - name: Generate REP self-signed certificate
+      ansible.builtin.command:
+        cmd: >-
+          openssl req -x509 -nodes -days 365 -subj "/CN=rep-core.internal"
+          -newkey rsa:2048 -keyout /etc/nginx/tls/rep_core.key
+          -out /etc/nginx/tls/rep_core.crt
+      args:
+        creates: /etc/nginx/tls/rep_core.crt
+
+    - name: Install mock HTTP service helper
+      ansible.builtin.copy:
+        dest: /usr/local/bin/mock_http_service.py
+        mode: "0755"
+        content: |
+          #!/usr/bin/env python3
+          import argparse
+          import json
+          from http.server import BaseHTTPRequestHandler, HTTPServer
+
+          class Handler(BaseHTTPRequestHandler):
+              def do_GET(self):
+                  self.send_response(200)
+                  self.send_header("Content-Type", "application/json")
+                  self.end_headers()
+                  self.wfile.write(self.server.payload)
+
+              def log_message(self, *args, **kwargs):
+                  return
+
+          def main():
+              parser = argparse.ArgumentParser()
+              parser.add_argument("--port", type=int, required=True)
+              parser.add_argument("--payload", default="{}")
+              args = parser.parse_args()
+              payload = json.dumps(json.loads(args.payload)).encode()
+              server = HTTPServer(("0.0.0.0", args.port), Handler)
+              server.payload = payload
+              server.serve_forever()
+
+          if __name__ == "__main__":
+              main()
+
+    - name: Configure REP backend mock service
+      ansible.builtin.copy:
+        dest: /etc/systemd/system/rep-backend.service
+        mode: "0644"
+        content: |
+          [Unit]
+          Description=Mock REP backend service for Molecule
+          After=network.target
+
+          [Service]
+          ExecStart=/usr/bin/python3 /usr/local/bin/mock_http_service.py --port 5000 --payload '{"status": "ok"}'
+          Restart=always
+
+          [Install]
+          WantedBy=multi-user.target
+
+    - name: Configure Grafana mock service
+      ansible.builtin.copy:
+        dest: /etc/systemd/system/grafana-server.service
+        mode: "0644"
+        content: |
+          [Unit]
+          Description=Mock Grafana API for Molecule
+          After=network.target
+
+          [Service]
+          ExecStart=/usr/bin/python3 /usr/local/bin/mock_http_service.py --port 3000 --payload '{"database": "ok"}'
+          Restart=always
+
+          [Install]
+          WantedBy=multi-user.target
+
+    - name: Reload systemd and enable mock services
+      ansible.builtin.systemd:
+        daemon_reload: true
+        name: "{{ item }}"
+        state: started
+        enabled: true
+      loop:
+        - rep-backend.service
+        - grafana-server.service
+
+    - name: Ensure nginx service is enabled
+      ansible.builtin.systemd:
+        name: nginx
+        state: started
+        enabled: true

@@ -70,4 +70,21 @@ Use tags (e.g. `--tags ng_soar`) to target specific components during troublesho
 - Trigger the telemetry simulator script (`/opt/telemetry-simulator/scenarios/generate.sh`) and confirm that NG-SIEM receives events through `rsyslog`.
 - Confirm that trainees can access the `WELCOME.txt` note in `C:\Labs` and that the instructor console has the `rep-notes` workspace.
 
+## 6. Automated validation with Molecule
+
+Molecule scenarios are provided for both provisioning playbooks. They spin up Docker containers that mimic the target services, execute the roles and validate the same health checks listed above.
+
+### Run Molecule locally
+
+```bash
+python3 -m pip install --upgrade "ansible>=9" "molecule>=6" "molecule-plugins[docker]"
+cd provisioning/subcase-1a
+molecule test
+
+cd ../subcase-1d
+molecule test
+```
+
+Each run executes the `prepare`, `converge` and `verify` phases. The command exits with status code `0` on success and a non-zero code when any provisioning or verification step fails. Review the Molecule log output to identify the failing task and re-run `molecule converge` / `molecule verify` while iterating on fixes.
+
 Following these steps ensures the infrastructure mirrors the flows of subcases 1a and 1d and is ready for the exercises described in `docs/subcase-1a-phishing-awareness.md` and `docs/subcase-1d-playbook-automation.md`.

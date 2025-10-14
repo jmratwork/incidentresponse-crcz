@@ -1,0 +1,65 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+platforms:
+  - name: subcase-1a
+    image: geerlingguy/docker-ubuntu2204-ansible:latest
+    command: /lib/systemd/systemd
+    privileged: true
+    pre_build_image: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    tmpfs:
+      - /run
+      - /tmp
+provisioner:
+  name: ansible
+  config_options:
+    defaults:
+      host_key_checking: "False"
+  inventory:
+    hosts:
+      all:
+        hosts:
+          subcase-1a:
+    children:
+      rep_core:
+        hosts:
+          subcase-1a:
+      reporting_workspace:
+        hosts:
+          subcase-1a:
+      instructor_console:
+        hosts:
+          subcase-1a:
+      trainees:
+        hosts:
+          subcase-1a:
+    host_vars:
+      subcase-1a:
+        rep_core_virtual_host:
+          listen: 80
+          server_name: rep-core.internal
+          root: /srv/rep/current
+          access_log: /var/log/nginx/rep_core_access.log
+          error_log: /var/log/nginx/rep_core_error.log
+          upstreams:
+            - name: api
+              server: 127.0.0.1:5000
+          healthcheck_path: /healthz
+          proxy_headers:
+            X-Forwarded-Proto: http
+            X-Request-ID: "$request_id"
+        rep_core_tls:
+          certificate_path: /etc/nginx/tls/rep_core.crt
+          key_path: /etc/nginx/tls/rep_core.key
+          certificate_content: ""
+          key_content: ""
+        reporting_workspace_healthcheck:
+          url: http://127.0.0.1:3000/api/health
+          status_code: 200
+        instructor_console_user: instructor
+verifier:
+  name: ansible

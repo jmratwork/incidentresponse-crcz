@@ -1,0 +1,75 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+platforms:
+  - name: subcase-1d
+    image: geerlingguy/docker-ubuntu2204-ansible:latest
+    command: /lib/systemd/systemd
+    privileged: true
+    pre_build_image: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    tmpfs:
+      - /run
+      - /tmp
+provisioner:
+  name: ansible
+  config_options:
+    defaults:
+      host_key_checking: "False"
+  inventory:
+    hosts:
+      all:
+        hosts:
+          subcase-1d:
+    children:
+      ng_soc:
+        hosts:
+          subcase-1d:
+      ng_siem:
+        hosts:
+          subcase-1d:
+      ng_soar:
+        hosts:
+          subcase-1d:
+      cti_ss:
+        hosts:
+          subcase-1d:
+      cicms:
+        hosts:
+          subcase-1d:
+      playbook_library:
+        hosts:
+          subcase-1d:
+      telemetry_feeder:
+        hosts:
+          subcase-1d:
+    host_vars:
+      subcase-1d:
+        cicms_nginx_site:
+          listen: 8443
+          server_name: cicms.internal
+          root: /srv/cicms/public
+          healthcheck_path: /status
+          upstreams:
+            - 127.0.0.1:5100
+        cicms_tls:
+          certificate_path: /etc/nginx/tls/cicms.crt
+          key_path: /etc/nginx/tls/cicms.key
+          certificate_content: ""
+          key_content: ""
+        cicms_healthcheck:
+          url: https://127.0.0.1:8443/status
+          status_code: 200
+          validate_certs: false
+        ng_soc_healthcheck:
+          url: http://127.0.0.1:5601/api/status
+          status_code: 200
+        ng_soar_healthcheck:
+          url: http://127.0.0.1:8080/healthz
+          status_code: 200
+        telemetry_feeder_healthcheck_url: http://127.0.0.1:9200/health
+verifier:
+  name: ansible
