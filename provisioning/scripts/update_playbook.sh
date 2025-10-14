@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-trap 'echo "[actualizar_playbook] Error on line ${LINENO}" >&2' ERR
+trap 'echo "[update_playbook] Error on line ${LINENO}" >&2' ERR
 
 require_cmd() {
   local cmd="$1"
   if ! command -v "$cmd" >/dev/null 2>&1; then
-    echo "[actualizar_playbook] Required command '$cmd' not found" >&2
+    echo "[update_playbook] Required command '$cmd' not found" >&2
     exit 1
   fi
 }
@@ -35,7 +35,7 @@ PLAYBOOK_ID="$1"
 PLAYBOOK_PATH="$2"
 
 if [[ ! -f "$PLAYBOOK_PATH" ]]; then
-  echo "[actualizar_playbook] Playbook file '$PLAYBOOK_PATH' not found" >&2
+  echo "[update_playbook] Playbook file '$PLAYBOOK_PATH' not found" >&2
   exit 2
 fi
 
@@ -52,13 +52,13 @@ get_token() {
 
 TOKEN=$(get_token)
 if [[ -z "$TOKEN" || "$TOKEN" == "null" ]]; then
-  echo "[actualizar_playbook] Failed to obtain authentication token" >&2
+  echo "[update_playbook] Failed to obtain authentication token" >&2
   exit 1
 fi
 
 VERSION=$(jq -r '.version' "$PLAYBOOK_PATH")
 if [[ -z "$VERSION" || "$VERSION" == "null" ]]; then
-  echo "[actualizar_playbook] Missing 'version' field in playbook" >&2
+  echo "[update_playbook] Missing 'version' field in playbook" >&2
   exit 2
 fi
 
