@@ -8,8 +8,8 @@ export SOC_PASS="<soc password>"
 export NG_SOC_API_BASE="https://ng-soc.example/api"
 export NG_SOAR_API_BASE="https://ng-soar.example/api"
 export CICMS_API_BASE="https://cicms.example/api"
-export PLAYBOOK_LIBRARY_API_BASE="https://playbooks.example/api"   # actualizar_playbook.sh only
-export CTISS_API_BASE="https://cti-ss.example/api"                  # compartir_playbook.sh only
+export PLAYBOOK_LIBRARY_API_BASE="https://playbooks.example/api"   # update_playbook.sh only
+export CTISS_API_BASE="https://cti-ss.example/api"                  # share_playbook.sh only
 ```
 
 > **Tip:** adjust the HTTPS endpoints to the deployment that is being exercised. The scripts stop with a descriptive error if any dependency is missing or an endpoint variable is not defined.
@@ -18,12 +18,12 @@ export CTISS_API_BASE="https://cti-ss.example/api"                  # compartir_
 > - On Debian/Ubuntu, install both tools with `sudo apt-get install httpie jq`.
 > - On macOS with Homebrew, install them with `brew install httpie jq`.
 
-Both HTTPie and `jq` are required to execute `crear_playbook.sh`, `actualizar_playbook.sh` and `compartir_playbook.sh`.
+Both HTTPie and `jq` are required to execute `create_playbook.sh`, `update_playbook.sh` and `share_playbook.sh`.
 
 ## 1. Playbook creation
 
 ```bash
-./provisioning/scripts/crear_playbook.sh provisioning/scripts/examples/playbook-create.json
+./provisioning/scripts/create_playbook.sh provisioning/scripts/examples/playbook-create.json
 ```
 
 - The first call registers the playbook in the NG-SOC central repository.
@@ -34,7 +34,7 @@ Both HTTPie and `jq` are required to execute `crear_playbook.sh`, `actualizar_pl
 ## 2. Updating and versioning
 
 ```bash
-./provisioning/scripts/actualizar_playbook.sh playbook--example-create provisioning/scripts/examples/playbook-update.json
+./provisioning/scripts/update_playbook.sh playbook--example-create provisioning/scripts/examples/playbook-update.json
 ```
 
 - The update synchronises NG-SOC and NG-SOAR with the new version and records the change in the playbook library.
@@ -43,7 +43,7 @@ Both HTTPie and `jq` are required to execute `crear_playbook.sh`, `actualizar_pl
 ## 3. Distribution and sharing with CTI-SS
 
 ```bash
-./provisioning/scripts/compartir_playbook.sh playbook--example-create canal-general
+./provisioning/scripts/share_playbook.sh playbook--example-create canal-general
 ```
 
 - NG-SOAR exposes the playbook in CACAO format and CTI-SS replicates it to the targeted intelligence channels.
@@ -62,7 +62,7 @@ Both HTTPie and `jq` are required to execute `crear_playbook.sh`, `actualizar_pl
 - Lightweight regression tests based on [`bats`](https://github.com/bats-core/bats-core) exercise the error handling without reaching the real APIs. Execute them with:
 
 ```bash
-bats provisioning/scripts/tests/crear_playbook.bats
+bats provisioning/scripts/tests/playbook_scripts.bats
 ```
 
 > The tests mock the `http` and `jq` binaries so that the scripts can be validated offline, while still respecting the expected error codes when the APIs fail.

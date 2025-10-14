@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-trap 'echo "[crear_playbook] Error on line ${LINENO}" >&2' ERR
+trap 'echo "[create_playbook] Error on line ${LINENO}" >&2' ERR
 
 require_cmd() {
   local cmd="$1"
   if ! command -v "$cmd" >/dev/null 2>&1; then
-    echo "[crear_playbook] Required command '$cmd' not found" >&2
+    echo "[create_playbook] Required command '$cmd' not found" >&2
     exit 1
   fi
 }
@@ -33,7 +33,7 @@ fi
 
 PLAYBOOK_PATH="$1"
 if [[ ! -f "$PLAYBOOK_PATH" ]]; then
-  echo "[crear_playbook] Playbook file '$PLAYBOOK_PATH' not found" >&2
+  echo "[create_playbook] Playbook file '$PLAYBOOK_PATH' not found" >&2
   exit 2
 fi
 
@@ -50,7 +50,7 @@ get_token() {
 
 TOKEN=$(get_token)
 if [[ -z "$TOKEN" || "$TOKEN" == "null" ]]; then
-  echo "[crear_playbook] Failed to obtain authentication token" >&2
+  echo "[create_playbook] Failed to obtain authentication token" >&2
   exit 1
 fi
 

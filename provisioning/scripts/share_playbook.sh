@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-trap 'echo "[compartir_playbook] Error on line ${LINENO}" >&2' ERR
+trap 'echo "[share_playbook] Error on line ${LINENO}" >&2' ERR
 
 require_cmd() {
   local cmd="$1"
   if ! command -v "$cmd" >/dev/null 2>&1; then
-    echo "[compartir_playbook] Required command '$cmd' not found" >&2
+    echo "[share_playbook] Required command '$cmd' not found" >&2
     exit 1
   fi
 }
@@ -46,7 +46,7 @@ get_token() {
 
 TOKEN=$(get_token)
 if [[ -z "$TOKEN" || "$TOKEN" == "null" ]]; then
-  echo "[compartir_playbook] Failed to obtain authentication token" >&2
+  echo "[share_playbook] Failed to obtain authentication token" >&2
   exit 1
 fi
 
@@ -54,7 +54,7 @@ PAYLOAD=$(http --check-status --print=b GET "$SOAR_PLAYBOOK_ENDPOINT" \
   "Authorization: Bearer $TOKEN")
 
 if [[ -z "$PAYLOAD" ]]; then
-  echo "[compartir_playbook] Empty payload returned for playbook '$PLAYBOOK_ID'" >&2
+  echo "[share_playbook] Empty payload returned for playbook '$PLAYBOOK_ID'" >&2
   exit 1
 fi
 

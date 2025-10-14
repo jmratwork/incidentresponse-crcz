@@ -95,8 +95,8 @@ teardown() {
   rm -f "$MOCK_HTTP_LOG"
 }
 
-@test "crear_playbook succeeds with valid inputs" {
-  run "$BATS_TEST_DIRNAME/../crear_playbook.sh" "$BATS_TEST_DIRNAME/../examples/playbook-create.json"
+@test "create_playbook succeeds with valid inputs" {
+  run "$BATS_TEST_DIRNAME/../create_playbook.sh" "$BATS_TEST_DIRNAME/../examples/playbook-create.json"
   [ "$status" -eq 0 ]
   run grep -c 'cacao/repository' "$MOCK_HTTP_LOG"
   [ "$status" -eq 0 ]
@@ -109,31 +109,31 @@ teardown() {
   [ "$output" -eq 1 ]
 }
 
-@test "crear_playbook fails when repository call fails" {
+@test "create_playbook fails when repository call fails" {
   export MOCK_HTTP_FAIL='cacao/repository'
-  run "$BATS_TEST_DIRNAME/../crear_playbook.sh" "$BATS_TEST_DIRNAME/../examples/playbook-create.json"
+  run "$BATS_TEST_DIRNAME/../create_playbook.sh" "$BATS_TEST_DIRNAME/../examples/playbook-create.json"
   [ "$status" -ne 0 ]
 }
 
-@test "actualizar_playbook propagates version and handles errors" {
-  run "$BATS_TEST_DIRNAME/../actualizar_playbook.sh" playbook--example-create "$BATS_TEST_DIRNAME/../examples/playbook-update.json"
+@test "update_playbook propagates version and handles errors" {
+  run "$BATS_TEST_DIRNAME/../update_playbook.sh" playbook--example-create "$BATS_TEST_DIRNAME/../examples/playbook-update.json"
   [ "$status" -eq 0 ]
   run grep -c 'library/register' "$MOCK_HTTP_LOG"
   [ "$status" -eq 0 ]
   [ "$output" -eq 1 ]
   export MOCK_HTTP_FAIL='playbooks/'
-  run "$BATS_TEST_DIRNAME/../actualizar_playbook.sh" playbook--example-create "$BATS_TEST_DIRNAME/../examples/playbook-update.json"
+  run "$BATS_TEST_DIRNAME/../update_playbook.sh" playbook--example-create "$BATS_TEST_DIRNAME/../examples/playbook-update.json"
   [ "$status" -ne 0 ]
 }
 
-@test "compartir_playbook posts payload to CTI-SS" {
+@test "share_playbook posts payload to CTI-SS" {
   export MOCK_HTTP_GET_PAYLOAD='{"id":"mock","version":"1.1.0"}'
-  run "$BATS_TEST_DIRNAME/../compartir_playbook.sh" playbook--example-create canal-general
+  run "$BATS_TEST_DIRNAME/../share_playbook.sh" playbook--example-create canal-general
   [ "$status" -eq 0 ]
   run grep -c 'cacao/share' "$MOCK_HTTP_LOG"
   [ "$status" -eq 0 ]
   [ "$output" -eq 1 ]
   export MOCK_HTTP_FAIL='cacao/share'
-  run "$BATS_TEST_DIRNAME/../compartir_playbook.sh" playbook--example-create canal-general
+  run "$BATS_TEST_DIRNAME/../share_playbook.sh" playbook--example-create canal-general
   [ "$status" -ne 0 ]
 }
