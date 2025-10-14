@@ -54,6 +54,21 @@ See Figure 6 for the complete CYNET activity diagram.
 - `inventory.sample`: template inventory with placeholder credentials; load secrets at runtime via Ansible Vault or environment variables instead of committing them to version control.
 - `provisioning/`: KYPO/CRCZ topology files and Ansible playbooks that replicate the infrastructure defined in the CYNET activity diagram for the 1a and 1d flows.
 
+## Validating the repository
+
+Basic structural checks are provided to confirm that the learning sequence and topology descriptors stay consistent. Install the development dependencies and run the automated validation suite with:
+
+```bash
+pip install -r requirements-dev.txt
+pytest
+```
+
+The tests verify that:
+
+- `training_linear.json` follows the expected layout, with sequential steps and non-empty metadata for each activity.
+- `topology.yml` only references components defined within the document.
+- The KYPO topologies in `provisioning/` reference valid hosts, routers and networks in their mapping sections.
+
 ## Credential management
 
 Before executing Ansible playbooks, replace the password placeholders in `inventory.sample` by referencing secrets stored in Ansible Vault files or exported through environment variables. This keeps sensitive credentials out of the repository while preserving a working inventory template for the exercises.
