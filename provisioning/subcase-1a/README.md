@@ -54,9 +54,9 @@ ansible-playbook -i inventory.ini provisioning/subcase-1a/site.yml
 - **Validación**: se ejecuta `tmux -f … display-message` y un `bash -lc` que verifica que los *shortcuts* queden definidos como funciones.
 
 ### `trainee_workstation`
-- **Servicio**: distribuye la configuración del agente REP Collector y los accesos directos en los escritorios Windows de los participantes.
-- **Configuración**: mediante `ansible.windows.win_template` se generan `collector.yaml` y los accesos `.url` descritos en `trainee_workstation_shortcuts`.
-- **Variables clave**: `trainee_workstation_collector.*` (ruta, servicio y transportes) y `trainee_workstation_shortcuts`.
+- **Servicio**: distribuye la configuración del agente REP Collector, los accesos directos en los escritorios Windows de los participantes y el mensaje de bienvenida del laboratorio.
+- **Configuración**: mediante `ansible.windows.win_template` se generan `collector.yaml` y los accesos `.url` descritos en `trainee_workstation_shortcuts`, y con `ansible.windows.win_copy` se publica la nota `WELCOME.txt` en `{{ trainee_workstation_welcome_note.directory }}`.
+- **Variables clave**: `trainee_workstation_collector.*` (ruta, servicio y transportes), `trainee_workstation_shortcuts` y `trainee_workstation_welcome_note.*` (directorio, nombre y contenido del mensaje).
 - **Validación**: se comprueba el servicio con `Get-Service` y se reinicia automáticamente si cambian las plantillas.
 
 ## Parametrización y comprobaciones

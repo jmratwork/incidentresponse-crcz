@@ -5,6 +5,18 @@
     state: directory
   when: ansible_facts.os_family | default('') == 'Windows'
 
+- name: Ensure trainee labs directory exists
+  ansible.windows.win_file:
+    path: "{{ trainee_workstation_welcome_note.directory }}"
+    state: directory
+  when: ansible_facts.os_family | default('') == 'Windows'
+
+- name: Deploy trainee welcome note
+  ansible.windows.win_copy:
+    dest: "{{ trainee_workstation_welcome_note.path | default(trainee_workstation_welcome_note.directory ~ '\\\\' ~ trainee_workstation_welcome_note.filename) }}"
+    content: "{{ trainee_workstation_welcome_note.content }}"
+  when: ansible_facts.os_family | default('') == 'Windows'
+
 - name: Deploy collector configuration
   ansible.windows.win_template:
     src: collector.yaml.j2
