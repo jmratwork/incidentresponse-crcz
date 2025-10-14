@@ -1,73 +1,130 @@
 # Provisioning workflow for subcases 1a and 1d
 
-This guide explains how to instantiate the CyberRangeCZ infrastructure aligned with the CYNET activity diagram. The process is divided into two phases: importing the KYPO/CRCZ topology and configuring the virtual machines with Ansible.
+This guide explains how to automate the lifecycle of the CyberRangeCZ topologies that back subcases 1a and 1d. The workflow now
+includes a Python CLI that talks to KYPO, helper automation to combine API calls and Ansible, and the original manual steps for
+reference.
 
-## 1. Import the topology in KYPO/CRCZ
+## 1. Configure the KYPO CLI
 
-1. Sign in to the KYPO portal with an account that can create sandboxes.
-2. For subcase **1a**, upload `provisioning/subcase-1a-topology.yml`. The topology creates:
-   - REP backend servers (`rep-scheduler`, `rep-live-session`, `rep-quiz-engine`, `rep-practical-labs`).
-   - Instructor and trainee workstations connected to the `rep-frontend` network.
-   - The `reporting-workspace` node on the analytics segment.
-3. For subcase **1d**, upload `provisioning/subcase-1d-topology.yml` to provision:
-   - Core NG-SOC hosts (`ng-soc`, `ng-siem`, `ng-soar`).
-   - Supporting services (`cti-ss`, `cicms-operator`, `playbook-library`, `telemetry-simulator`).
-   - Segmented networks that emulate the SOC, automation, intelligence, coordination and telemetry zones.
-4. Deploy the sandbox and wait for KYPO/CRCZ to report that all machines are reachable.
+1. Copy `tools/kypo_cli/config.sample.yaml` to `config.yaml` (or any file of your choice).
+2. Edit the file to match your KYPO environment: portal URL, realm, username and password, client ID/secret, TLS verification
+   preference and sandbox defaults.
+3. You can override or replace these values with environment variables. The CLI looks for the following keys, using the `KYPO_`
+   prefix by default:
+   - `KYPO_PORTAL_URL`, `KYPO_REALM`, `KYPO_USERNAME`, `KYPO_PASSWORD`, `KYPO_CLIENT_ID`, `KYPO_CLIENT_SECRET`.
+   - `KYPO_VERIFY_TLS` (set to `false` to skip certificate validation in test ranges).
+   - `KYPO_TOKEN_ENDPOINT`, `KYPO_TOPOLOGY_ENDPOINT`, `KYPO_SANDBOX_ENDPOINT` to customise the API paths.
+   - `KYPO_CONFIG` to point at an alternate configuration file.
 
-## 2. Prepare credentials
+### Example configuration
 
-1. Duplicate `inventory.sample` and rename it to `inventory.ini` (or keep the `.sample` extension).
-2. Keep the hostnames and IP addresses defined by the topology files.
-3. Export credentials as environment variables before executing Ansible, for example:
-
-```bash
-export ANSIBLE_PASSWORD_REP_SCHEDULER='********'
-export ANSIBLE_PASSWORD_NG_SOC='********'
+```yaml
+portal_url: https://kypo.example.com
+realm: academy
+username: your.username
+password: your-password
+client_id: kypo-web
+verify_tls: true
+sandbox_defaults:
+  name: incident-response-sandbox
+  auto_start: true
 ```
 
-4. If you prefer to store secrets in Ansible Vault files, replace the `lookup('env', ...)` expressions with `ansible-vault` variables and reference the vault when running the playbooks.
+## 2. Import topologies and deploy sandboxes with the CLI
 
-## 3. Install Ansible dependencies
+### Using the low-level CLI
+
+1. Authenticate and upload a topology:
+
+   ```bash
+   python -m tools.kypo_cli.cli --config config.yaml upload-topology provisioning/subcase-1a-topology.yml
+   ```
+
+   Replace the path with `provisioning/subcase-1d-topology.yml` for subcase 1d. The command prints the JSON returned by KYPO; the
+   topology identifier is required for the next step.
+
+2. Deploy a sandbox from the imported topology:
+
+   ```bash
+   python -m tools.kypo_cli.cli --config config.yaml deploy-sandbox <topology_id> --overrides '{"name": "subcase-1a"}'
+   ```
+
+   Use `--overrides` to extend the payload with extra KYPO parameters (for example, scheduling, capacity or access policies).
+
+### Using the combined provisioning script
+
+Run `tools/provision_subcase.py` to upload the relevant topology, trigger the sandbox and execute the matching Ansible playbook in
+one go:
 
 ```bash
-python3 -m pip install --upgrade ansible
-python3 -m pip install pywinrm
-ansible-galaxy collection install ansible.windows community.general
+python tools/provision_subcase.py --subcase 1a --config config.yaml
 ```
 
-- Install `pywinrm` to enable Ansible WinRM connectivity. Use `python3 -m pip install "pywinrm[credssp]"` when the sandbox requires CredSSP delegation support.
-- Windows connectivity for trainee machines requires WinRM over TLS (port 5986). Configure certificates or use the inventory option `ansible_winrm_server_cert_validation=ignore` for lab environments.
+Flags of interest:
 
-## 4. Execute the playbooks
+- `--subcase`: choose `1a` or `1d`.
+- `--sandbox-name`: override the sandbox name without crafting JSON.
+- `--sandbox-overrides`: inject a JSON object into the deployment payload.
+- `--inventory`: select an inventory file (defaults to `inventory.sample`).
+- `--ansible-extra-args`: pass additional flags to `ansible-playbook` (for example `--ansible-extra-args "--tags setup"`).
+- `--skip-kypo` or `--skip-ansible`: run only one part of the workflow.
 
-### Subcase 1a
+## 3. Understand what each topology provisions
+
+- `provisioning/subcase-1a-topology.yml` defines the REP backend servers, instructor and trainee workstations and the reporting
+  workspace segments.
+- `provisioning/subcase-1d-topology.yml` spins up the NG-SOC core (`ng-soc`, `ng-siem`, `ng-soar`) and supporting services for the
+  automation and intelligence layers.
+
+## 4. Prepare credentials for Ansible
+
+1. Copy `inventory.sample` to `inventory.ini` (or keep the sample file and pass it explicitly).
+2. Replace placeholder values with the IP addresses defined in the KYPO deployment, if needed.
+3. Export credentials as environment variables before running the playbooks:
+
+   ```bash
+   export ANSIBLE_PASSWORD_REP_SCHEDULER='********'
+   export ANSIBLE_PASSWORD_NG_SOC='********'
+   ```
+
+   You can also migrate the secrets to Ansible Vault variables if your security policy requires encrypted files.
+
+## 5. Run the playbooks manually (optional)
+
+The provisioning script already runs Ansible, but you can trigger the playbooks directly:
 
 ```bash
 ansible-playbook -i inventory.ini provisioning/subcase-1a/site.yml
-```
-
-The playbook:
-- Installs web and application dependencies on the REP backend servers.
-- Prepares the reporting workspace dashboards.
-- Customises the instructor console.
-- Creates working folders for trainee machines.
-
-### Subcase 1d
-
-```bash
 ansible-playbook -i inventory.ini provisioning/subcase-1d/site.yml
 ```
 
-This playbook configures the NG ecosystem by installing packages, enabling services and seeding working directories that match the operational flow described in the NG-SOC documentation.
+Install dependencies with:
 
-Use tags (e.g. `--tags ng_soar`) to target specific components during troubleshooting.
+```bash
+python3 -m pip install --upgrade ansible
+python3 -m pip install "pywinrm[credssp]"
+ansible-galaxy collection install ansible.windows community.general
+```
 
-## 5. Validation steps
+## 6. Validation steps
 
-- Check SSH or WinRM connectivity with `ansible all -i inventory.ini -m ping` (use `ansible.windows.win_ping` for Windows groups).
-- Verify that key services are running (`nginx` on the playbook library, `redis-server` on NG-SOAR, `grafana-server` on the reporting workspace).
-- Trigger the telemetry simulator script (`/opt/telemetry-simulator/scenarios/generate.sh`) and confirm that NG-SIEM receives events through `rsyslog`.
-- Confirm that trainees can access the `WELCOME.txt` note in `C:\Labs` and that the instructor console has the `rep-notes` workspace.
+- Run `ansible all -i inventory.ini -m ping` (or `ansible -i inventory.ini windows -m ansible.windows.win_ping`) to validate
+  connectivity.
+- Confirm that key services are running, such as `nginx` on the playbook library, `redis-server` on NG-SOAR and Grafana on the
+  reporting workspace.
+- Execute `/opt/telemetry-simulator/scenarios/generate.sh` to verify that NG-SIEM receives events via `rsyslog`.
+- Confirm that trainees can access `WELCOME.txt` in `C:\\Labs` and that the instructor console shows the `rep-notes` workspace.
 
-Following these steps ensures the infrastructure mirrors the flows of subcases 1a and 1d and is ready for the exercises described in `docs/subcase-1a-phishing-awareness.md` and `docs/subcase-1d-playbook-automation.md`.
+## 7. Integrate with CI/CD pipelines
+
+1. Store the KYPO credentials in the pipeline secret manager and inject them as `KYPO_*` environment variables or as a protected
+   `config.yaml` artifact.
+2. Add a job that checks out the repository, installs `requests` (for the CLI) and Ansible, and runs
+   `python tools/provision_subcase.py --subcase <id> --skip-ansible` to pre-provision the sandbox.
+3. Follow up with another job that executes Ansible against the freshly deployed sandbox using `--skip-kypo` to avoid duplicate
+   deployments.
+4. Capture the CLI JSON output as build artifacts so that sandbox identifiers are available for downstream testing or teardown
+   stages.
+
+Automating the provisioning pipeline in this way ensures that environments for subcases 1a and 1d can be reproduced reliably in
+KYPO while keeping configuration details in version control.

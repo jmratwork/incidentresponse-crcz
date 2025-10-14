@@ -1,0 +1,16 @@
+# Sample configuration for the KYPO CLI
+portal_url: https://kypo.example.com
+realm: academy
+username: your.username
+password: your-password
+client_id: kypo-web
+# client_secret: optional-client-secret
+verify_tls: true
+endpoints:
+  token: /auth/realms/{realm}/protocol/openid-connect/token
+  topology_import: /api/v1/topologies/import
+  sandbox_deploy: /api/v1/sandboxes
+sandbox_defaults:
+  name: incident-response-sandbox
+  auto_start: true
+  # Add any additional sandbox parameters required by your KYPO instance.
