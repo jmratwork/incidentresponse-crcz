@@ -1,4 +1,8 @@
----
+- name: Ensure telemetry service group exists
+  ansible.builtin.group:
+    name: telemetry
+    system: true
+
 - name: Ensure telemetry feeder configuration directory exists
   ansible.builtin.file:
     path: "{{ telemetry_feeder_agent_config | dirname }}"
