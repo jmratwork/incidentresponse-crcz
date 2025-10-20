@@ -1,4 +1,9 @@
 ---
+- name: Ensure cacao group exists
+  ansible.builtin.group:
+    name: cacao
+    system: true
+
 - name: Ensure playbook library root exists
   ansible.builtin.file:
     path: "{{ playbook_library_root }}"
