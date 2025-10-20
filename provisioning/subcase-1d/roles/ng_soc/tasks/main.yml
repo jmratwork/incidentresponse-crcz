@@ -1,4 +1,9 @@
 ---
+- name: Ensure ng-soc system group exists
+  ansible.builtin.group:
+    name: ng-soc
+    system: true
+
 - name: Ensure ng-soc configuration directory exists
   ansible.builtin.file:
     path: "{{ ng_soc_dashboard_config | dirname }}"
