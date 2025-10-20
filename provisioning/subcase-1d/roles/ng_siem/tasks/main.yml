@@ -1,4 +1,8 @@
----
+- name: Ensure ng-siem service identity exists
+  ansible.builtin.group:
+    name: ng-siem
+    state: present
+
 - name: Ensure ng-siem pipeline directory exists
   ansible.builtin.file:
     path: "{{ ng_siem_pipeline_config | dirname }}"
