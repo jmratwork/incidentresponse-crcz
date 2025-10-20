@@ -1,4 +1,15 @@
----
+- name: Ensure ng-soar group exists
+  ansible.builtin.group:
+    name: ng-soar
+    state: present
+
+- name: Ensure ng-soar service user exists
+  ansible.builtin.user:
+    name: ng-soar
+    group: ng-soar
+    system: true
+    create_home: false
+
 - name: Ensure ng-soar configuration directory exists
   ansible.builtin.file:
     path: "{{ ng_soar_queue_config | dirname }}"
