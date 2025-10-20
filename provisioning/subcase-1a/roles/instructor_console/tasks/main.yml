@@ -1,3 +1,8 @@
+- name: Ensure instructor console group exists
+  ansible.builtin.group:
+    name: "{{ instructor_console_user }}"
+    system: true
+
 - name: Ensure instructor console user exists
   ansible.builtin.user:
     name: "{{ instructor_console_user }}"
