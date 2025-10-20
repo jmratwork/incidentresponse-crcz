@@ -1,4 +1,15 @@
 ---
+- name: Ensure grafana group exists
+  ansible.builtin.group:
+    name: grafana
+    system: true
+
+- name: Ensure grafana user exists
+  ansible.builtin.user:
+    name: grafana
+    group: grafana
+    system: true
+
 - name: Ensure Grafana provisioning directories exist
   ansible.builtin.file:
     path: "{{ item }}"
