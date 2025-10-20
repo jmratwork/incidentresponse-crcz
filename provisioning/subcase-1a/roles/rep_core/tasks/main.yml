@@ -49,6 +49,17 @@
   notify: reload nginx
   no_log: true
 
+- name: Ensure rep group exists
+  ansible.builtin.group:
+    name: rep
+    system: true
+
+- name: Ensure rep user exists
+  ansible.builtin.user:
+    name: rep
+    group: rep
+    system: true
+
 - name: Provision shared secret for internal APIs
   ansible.builtin.copy:
     dest: "{{ rep_core_shared_secret_file }}"
